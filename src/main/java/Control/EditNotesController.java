@@ -103,7 +103,7 @@ public class EditNotesController implements Initializable {
         
         
 //        edNota.appendText( Util.DateToText(a, "HH:mm dd/MM/yyyy - u")+ " - ");
-        edNota.appendText( Util.DateToText(a, "d MMM yyyy - EEE - HH:mm")+ " - ");
+        edNota.appendText( Util.DateToText(a, "dd MMM yyyy - EEE - HH:mm")+ " - ");
         
         
         

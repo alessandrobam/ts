@@ -3129,7 +3129,7 @@ public class MainWindowController implements Initializable {
 		}
 
 //		file.InsertLine("\n" + Util.DateToText(a, "HH:mm dd/MM/yyyy - u") + statusMessage, getCurrentFileName(2));
-		file.InsertLine("\n" + Util.DateToText(a, "d MMM yyyy - EEE - HH:mm") + statusMessage, getCurrentFileName(2));
+		file.InsertLine("\n" + Util.DateToText(a, "dd MMM yyyy - EEE - HH:mm") + statusMessage, getCurrentFileName(2));
 		
 		
 		
