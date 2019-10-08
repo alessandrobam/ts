@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="145.0" prefWidth="366.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.FixDateController">
+   <children>
+      <TextField fx:id="edIni" layoutX="61.0" layoutY="53.0" prefHeight="25.0" prefWidth="113.0" text="12/04/2014 10:54" />
+      <TextField fx:id="edFim" layoutX="217.0" layoutY="57.0" prefHeight="25.0" prefWidth="113.0" />
+      <Text layoutX="25.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inicio" />
+      <Text layoutX="188.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fim" />
+      <Button fx:id="btOK" layoutX="274.0" layoutY="98.0" mnemonicParsing="false" onAction="#btOKClick" prefHeight="25.0" prefWidth="58.0" text="OK" />
+      <Button fx:id="btCancel" layoutX="198.0" layoutY="98.0" mnemonicParsing="false" onAction="#cancelButtonClick" prefHeight="25.0" prefWidth="58.0" text="Cancel" />
+   </children>
+</AnchorPane>

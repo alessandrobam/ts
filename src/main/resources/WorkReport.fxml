@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="573.0" prefWidth="1364.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.WorkReportController">
+   <children>
+      <DatePicker fx:id="dpDateFim" layoutX="1169.0" layoutY="26.0" prefHeight="25.0" prefWidth="111.0" />
+      <DatePicker fx:id="dpDateIni" layoutX="991.0" layoutY="26.0" prefHeight="25.0" prefWidth="111.0" />
+      <Text layoutX="948.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From" />
+      <Text layoutX="1136.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" />
+      <TableView fx:id="tbReport" layoutX="240.0" layoutY="60.0" prefHeight="431.0" prefWidth="1108.0" styleClass="tabletasks" stylesheets="@../test.css">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="60.0" styleClass="righta" text="id" />
+            <TableColumn fx:id="role" prefWidth="100.0" text="Role" />
+          <TableColumn fx:id="project" prefWidth="230.0" text="Project" />
+          <TableColumn fx:id="task" minWidth="0.0" prefWidth="350.0" text="Task" />
+          <TableColumn fx:id="date" minWidth="0.0" prefWidth="73.0" styleClass="center" text="Date" />
+          <TableColumn fx:id="pweekday" minWidth="0.0" prefWidth="73.0" styleClass="center" text="Weekday" />
+          <TableColumn fx:id="started" minWidth="0.0" prefWidth="64.759765625" styleClass="center" text="Start" />
+          <TableColumn fx:id="finished" minWidth="0.0" prefWidth="58.0" styleClass="center" text="End" />
+          <TableColumn fx:id="total" minWidth="0.0" prefWidth="58.0" styleClass="rightb" text="Total" />
+        </columns>
+      </TableView>
+      <Separator layoutX="14.0" layoutY="14.0" prefHeight="9.0" prefWidth="1331.0" />
+      <Button fx:id="btCancel" layoutX="1230.0" layoutY="523.0" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
+      <Button fx:id="btOK" layoutX="1298.0" layoutY="523.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="25.0" prefWidth="52.0" text="OK" />
+      <Button fx:id="btGO" layoutX="1295.0" layoutY="26.0" mnemonicParsing="false" onAction="#goButtonClick" prefHeight="25.0" prefWidth="52.0" text="GO" />
+      <Text fx:id="tfTotal" fontSmoothingType="LCD" layoutX="1257.0" layoutY="511.0" strokeType="INSIDE" strokeWidth="0.0" text="Text" textAlignment="RIGHT" wrappingWidth="90.13671875" />
+      <TableView fx:id="tbSummary" layoutX="14.0" layoutY="60.0" prefHeight="431.0" prefWidth="204.0">
+        <columns>
+          <TableColumn fx:id="role_name" prefWidth="130.0" text="Role" />
+          <TableColumn fx:id="total_summary" minWidth="0.0" prefWidth="59.0" styleClass="center" text="Total" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="273.0" prefWidth="471.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.ReescheduleController">
+   <children>
+      <Separator layoutX="13.0" layoutY="27.0" prefHeight="1.0" prefWidth="435.0" />
+      <Label layoutX="340.0" layoutY="40.0" text="Date" />
+      <Label layoutX="180.0" layoutY="40.0" text="Next" />
+      <Label layoutX="15.0" layoutY="40.0" text="Interval" />
+      <ListView fx:id="lvInterval" layoutX="15.0" layoutY="57.0" prefHeight="166.0" prefWidth="150.0" />
+      <ListView fx:id="lvNext" layoutX="180.0" layoutY="57.0" prefHeight="166.0" prefWidth="150.0" />
+      <DatePicker fx:id="dpDate" layoutX="340.0" layoutY="57.0" prefHeight="25.0" prefWidth="114.0" />
+      <Button fx:id="btOK" layoutX="371.0" layoutY="234.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="25.0" prefWidth="83.0" text="OK" />
+      <Button fx:id="btCancel" layoutX="270.0" layoutY="234.0" mnemonicParsing="false" onAction="#cancelButtonClick" prefHeight="25.0" prefWidth="83.0" text="Cancel" />
+      <Text fx:id="tfDiaSemana" layoutX="340.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monday" wrappingWidth="114.0" />
+      <Text fx:id="tfBitesCounts" layoutX="340.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Open Bites: 14" wrappingWidth="114.0" />
+   </children>
+</AnchorPane>

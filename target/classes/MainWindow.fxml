@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="1314.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.MainWindowController">
+   <center>
+      <SplitPane fx:id="spPaneVertical" dividerPositions="0.75" prefHeight="160.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+        <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <SplitPane fx:id="spPane" dividerPositions="0.5" orientation="VERTICAL" prefHeight="332.0" prefWidth="203.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="211.0" prefWidth="201.0">
+                           <children>
+                              <TableView fx:id="tbMasterTasks" maxWidth="1.7976931348623157E308" prefHeight="221.0" prefWidth="456.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="master_sign" minWidth="0.0" prefWidth="5.0" text="Sign" />
+                                    <TableColumn fx:id="master_projectCol" prefWidth="400.0" text="Project" />
+                                    <TableColumn fx:id="master_categoryCol" minWidth="0.0" prefWidth="200.0" text="Category" />
+                                    <TableColumn fx:id="master_roleCol" minWidth="0.0" prefWidth="150.0" text="Role" />
+                                    <TableColumn fx:id="master_lupCol" minWidth="0.0" prefWidth="50.0" styleClass="righta" text="L.Up" />
+                                    <TableColumn fx:id="master_cdCol" minWidth="8.0" prefWidth="37.0" styleClass="righta" text="C.D" />
+                                    <TableColumn fx:id="master_idCol" prefWidth="50.0" styleClass="righta" text="Id" />
+                                    <TableColumn fx:id="master_percdoneCol" prefWidth="40.0" styleClass="righta" text="\%" />
+                                    <TableColumn fx:id="master_openCol" text="Open" />
+                                    <TableColumn fx:id="master_workingCol" text="Working" />
+                                    <TableColumn fx:id="master_waitingCol" text="Waiting" />
+                                    <TableColumn fx:id="master_statusCol" prefWidth="60.0" styleClass="open" text="Status" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane fx:id="apTasks" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <TabPane fx:id="tabPane" focusTraversable="false" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="0.0">
+                                 <tabs>
+                                    <Tab text="Tasks">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TableView fx:id="tbTasks" layoutX="-20.0" layoutY="-58.0" prefHeight="128.0" prefWidth="248.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="task_golden" minWidth="0.0" prefWidth="5.0" text="Sign" />
+                                                      <TableColumn fx:id="task_marked" minWidth="0.0" prefWidth="5.0" text="Sign" />
+                                                      <TableColumn fx:id="task_nameCol" prefWidth="400.0" text="Task" />
+                                                      <TableColumn fx:id="task_tagCol" minWidth="75.0" prefWidth="140.0" text="Tag" />
+                                                      <TableColumn fx:id="task_deadlineCol" minWidth="7.0" prefWidth="110.0" text="Deadline" />
+                                                      <TableColumn fx:id="task_tooverdueCol" prefWidth="50.0" styleClass="righta" text="CD" />
+                                                      <TableColumn fx:id="task_startCol" prefWidth="130.0" text="Start" />
+                                                      <TableColumn fx:id="task_waitingCol" prefWidth="130.0" text="Wait" />
+                                                      <TableColumn fx:id="task_finishCol" prefWidth="130.0" text="Finish" />
+                                                      <TableColumn fx:id="task_statusCol" prefWidth="60.0" text="Status" />
+                                                   </columns>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab fx:id="taskPane" text="Work History">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TableView fx:id="tbWs" prefHeight="128.0" prefWidth="248.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columns>
+                                                      <TableColumn fx:id="ws_idCol" prefWidth="60.0" styleClass="righta" text="ID" />
+                                                      <TableColumn fx:id="ws_dateCol" prefWidth="75.0" styleClass="center" text="Date" />
+                                                      <TableColumn fx:id="ws_dowCol" prefWidth="120.0" text="DoW" />
+                                                      <TableColumn fx:id="ws_startCol" prefWidth="95.0" styleClass="righta" text="Start" />
+                                                      <TableColumn fx:id="ws_finishCol" prefWidth="95.0" styleClass="righta" text="Finish" />
+                                                      <TableColumn fx:id="ws_totalCol" prefWidth="60.0" styleClass="rightb" text="Total" />
+                                                   </columns>
+                                                </TableView>
+                                             </children></AnchorPane>
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <VBox layoutX="1.0" prefHeight="391.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <SplitPane fx:id="spPaneMiles" dividerPositions="0.8" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="180.0">
+                           <children>
+                              <TableView fx:id="tbBites" prefHeight="386.0" prefWidth="212.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="bite_statusCol" minWidth="0.0" prefWidth="7.0" />
+                                    <TableColumn fx:id="bite_GoldenCol" minWidth="0.0" prefWidth="7.0" />
+                                    <TableColumn fx:id="bite_deadlineCol" minWidth="0.0" prefWidth="71.0" text="Date" />
+                                    <TableColumn fx:id="bite_weekdayCol" minWidth="0.0" prefWidth="55.0" text="DoW" />
+                                    <TableColumn fx:id="bite_nameCol" prefWidth="463.0" text="Bite" />
+                                    <TableColumn fx:id="bite_CDCol" prefWidth="45.0" text="CD" />
+                                    <TableColumn fx:id="bite_nextCol" minWidth="7.0" prefWidth="7.0" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane fx:id="apMilestones" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="180.0">
+                           <children>
+                              <TableView fx:id="tbMiles" prefHeight="200.0" prefWidth="200.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columns>
+                                  <TableColumn fx:id="miles_statusCol" minWidth="0.0" prefWidth="7.0" />
+                                    <TableColumn fx:id="miles_goldenCol" minWidth="0.0" prefWidth="7.0" />
+                                  <TableColumn fx:id="miles_name" prefWidth="450.0" styleClass="nextmilestones" text="Milestones in the next 15 days" />
+                                </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </center>
+   <top>
+      <VBox prefHeight="0.0" prefWidth="943.0" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <AnchorPane prefHeight="16.0" prefWidth="943.0" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane blendMode="SRC_ATOP" layoutX="64.0" layoutY="44.0" prefHeight="15.0" prefWidth="943.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <right>
+                  <HBox prefHeight="16.0" prefWidth="247.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Pane fx:id="spPaneOpen1" prefHeight="200.0" prefWidth="60.0">
+                           <children>
+                              <Text fx:id="textTotalTaskCountAndMarked" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="spPaneOpen" prefHeight="200.0" prefWidth="60.0">
+                           <children>
+                              <Text fx:id="textStatusOpen" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font></Text>
+                           </children></Pane>
+                        <Pane fx:id="spPaneWorking" prefHeight="200.0" prefWidth="60.0">
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="textStatusWorking" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font></Text>
+                           </children></Pane>
+                        <Pane fx:id="spPaneWaiting" prefHeight="200.0" prefWidth="60.0">
+                           <HBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </HBox.margin>
+                           <children>
+                              <Text fx:id="textStatusWaiting" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font></Text>
+                           </children></Pane>
+                     </children>
+                  </HBox>
+               </right>
+               <left>
+                  <Text fx:id="textStatus" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets left="3.0" />
+                     </BorderPane.margin>
+                  </Text>
+               </left>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

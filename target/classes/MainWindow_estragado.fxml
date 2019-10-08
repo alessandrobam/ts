@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.MainWindowController">
+   <children>
+      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="423.0" prefWidth="925.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="1087.0">
+               <children>
+                  <ComboBox prefWidth="150.0">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <Separator orientation="VERTICAL" prefHeight="36.0" prefWidth="0.0" />
+                  <AnchorPane prefHeight="36.0" prefWidth="426.0">
+                     <children>
+                        <Text fx:id="tfBiteFilter" layoutX="169.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+                        <Separator layoutX="323.0" layoutY="8.0" orientation="VERTICAL" prefHeight="20.0" prefWidth="24.0" />
+                        <CheckBox layoutX="341.0" layoutY="10.0" mnemonicParsing="false" text="Show open" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </HBox>
+            <SplitPane dividerPositions="0.8713029576338929" prefHeight="436.0" prefWidth="992.0">
+               <items>
+                  <SplitPane fx:id="spPane" dividerPositions="0.5" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="365.0" prefWidth="615.0" BorderPane.alignment="CENTER">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="115.0" prefWidth="765.0">
+                           <children>
+                              <TableView fx:id="tbMasterTasks" layoutX="-44.0" layoutY="7.0" maxWidth="1.7976931348623157E308" prefHeight="221.0" prefWidth="456.0" styleClass="tabletasks" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="3.0" AnchorPane.topAnchor="0.0">
+                                 <columns>
+                                    <TableColumn fx:id="master_projectCol" prefWidth="335.0" text="Project" />
+                                    <TableColumn fx:id="master_categoryCol" prefWidth="130.0" text="Category" />
+                                    <TableColumn fx:id="master_lupCol" prefWidth="40.0" styleClass="righta" text="L.Up" />
+                                    <TableColumn fx:id="master_cdCol" prefWidth="40.0" styleClass="righta" text="C.D" />
+                                    <TableColumn fx:id="master_idCol" prefWidth="50.0" styleClass="righta" text="Id" />
+                                    <TableColumn fx:id="master_percdoneCol" prefWidth="40.0" styleClass="righta" text="\%" />
+                                    <TableColumn fx:id="master_openCol" prefWidth="61.0" text="Open" />
+                                    <TableColumn fx:id="master_workingCol" prefWidth="61.0" text="Working" />
+                                    <TableColumn fx:id="master_waitingCol" prefWidth="61.0" text="Waiting" />
+                                    <TableColumn fx:id="master_statusCol" prefWidth="60.0" styleClass="open" text="Status" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane fx:id="apTasks" minHeight="0.0" minWidth="0.0" prefHeight="157.0" prefWidth="258.0">
+                           <children>
+                              <TabPane layoutX="-86.0" layoutY="-33.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <tabs>
+                                  <Tab text="Tasks">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <TableView fx:id="tbTasks" layoutX="-20.0" layoutY="-58.0" prefHeight="128.0" prefWidth="248.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <columns>
+                                                    <TableColumn fx:id="task_nameCol" prefWidth="322.0" text="Task" />
+                                                    <TableColumn fx:id="task_tagCol" minWidth="122.0" prefWidth="75.0" text="Tag" />
+                                                      <TableColumn fx:id="task_deadlineCol" prefWidth="75.0" text="Deadline" />
+                                                      <TableColumn fx:id="task_tooverdueCol" prefWidth="30.0" styleClass="righta" text="CD" />
+                                                      <TableColumn fx:id="task_startCol" prefWidth="95.0" text="Start" />
+                                                      <TableColumn fx:id="task_waitingCol" prefWidth="95.0" text="Wait" />
+                                                      <TableColumn fx:id="task_finishCol" prefWidth="95.0" text="Finish" />
+                                                      <TableColumn fx:id="task_statusCol" prefWidth="60.0" text="Status" />
+                                                  </columns>
+                                                </TableView>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab text="Work History">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    </content>
+                                  </Tab>
+                                </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+                  <VBox prefHeight="365.0" prefWidth="431.0">
+                     <children>
+                        <TableView fx:id="tbBites" prefHeight="328.0" prefWidth="458.0" styleClass="tabletasks" VBox.vgrow="ALWAYS">
+                          <columns>
+                              <TableColumn fx:id="bite_statusCol" minWidth="0.0" prefWidth="7.0" />
+                            <TableColumn fx:id="bite_deadlineCol" minWidth="0.0" prefWidth="49.0" text="Date" />
+                            <TableColumn fx:id="bite_weekdayCol" minWidth="0.0" prefWidth="52.0" text="DoW" />
+                              <TableColumn fx:id="bite_nameCol" prefWidth="304.0" text="Bite" />
+                          </columns>
+                        </TableView>
+                        <AnchorPane prefHeight="66.0" prefWidth="430.0">
+                           <children>
+                              <TextField fx:id="BiteListed" layoutX="95.0" layoutY="21.0" prefHeight="25.0" prefWidth="57.0" />
+                              <Text layoutX="24.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bites Listed" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+               </items>
+            </SplitPane>
+            <BorderPane prefHeight="13.0" prefWidth="925.0">
+               <center>
+                  <Pane prefHeight="59.0" prefWidth="596.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Text fx:id="textStatusBarMaster" layoutX="31.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2012m12 - Timesheet in Java Development" wrappingWidth="375.80078125">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="textStatusBarTask" layoutX="271.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quando a tarefa é colocada em Wait ou Done, calcular o SESSION time" wrappingWidth="432.80078125">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Text>
+                        <Separator layoutX="254.0" layoutY="3.0" orientation="VERTICAL" prefHeight="20.0" prefWidth="24.0" />
+                        <Separator layoutX="646.0" layoutY="3.0" orientation="VERTICAL" prefHeight="20.0" prefWidth="24.0" />
+                        <Text fx:id="textStatusBarBite" layoutX="669.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quando a tarefa é colocada em Wait ou Done, calcular o SESSION time" wrappingWidth="432.80078125">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+               </center>
+            </BorderPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

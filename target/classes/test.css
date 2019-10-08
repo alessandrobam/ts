@@ -1,0 +1,206 @@
+.textarea { -fx-font-smoothing-type:lcd; 
+        -fx-font-fill: red;}
+
+.root {
+    -fx-font-fill: red;
+    -fx-font-size:11px;
+}
+
+
+.namelate:selected {
+       -fx-fill: white ;
+}
+
+.tale-row-cell:selected {
+   -fx-background-color:#9999ff; 
+   -fx-text-fill: blueviolet ;
+}
+.late {
+    -fx-text-fill: #ff3333;
+    //-fx-background-color: rgba(255, 0, 0, .5);
+    /*-fx-control-inner-background: rgb(255, 248, 33);
+    -fx-accent: derive(-fx-control-inner-background, -10%);
+    -fx-cell-hover-color: red;
+    -fx-cell-focus-inner-border:red;
+    -fx-text-fill: white; 
+    //-fx-alignment: CENTER;
+    /*-fx-font-weight: bold;*/
+}
+
+.nametoday  {
+    -fx-text-fill: #3333ff;
+    -fx-font-weight: bold;
+}
+
+.tabletasks {
+   /*-fx-font: 11px "Arial";*/
+   -fx-font-size: 12px;
+}
+
+.table-row-cella {
+    -fx-background-color: -fx-table-cell-border-color, -fx-control-inner-background;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+.table-row-cell:odda {
+    -fx-background-color: -fx-table-cell-border-color, -fx-control-inner-background;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+
+/* Style for default table rows */ 
+.defaultTableStyle { 
+    -fx-font-size: 4px;
+    -fx-base: rgb(0,0,0,0);
+    -fx-background-color: 
+        linear-gradient( to top, derive(-fx-color, 35.77966101694915%) 0%, derive(-fx-color, 10.05084745762713%) 50%, derive(-fx-color, -8.559322033898283%) 50.5%, derive(-fx-color, -30.0%) 100%);                   
+    -fx-background-color: rgba(0,0,0,.75);        
+    -fx-border-color: gray;
+    -fx-border-width: 1 1 0 0;
+}
+
+ 
+
+ 
+
+
+/* Format for table rows where container's arrival 
+
+has been planned */
+
+.planAssigned { 
+    -fx-font-size: 12px;
+    -fx-base: rgb(0,0,0,0);
+    -fx-background-color: #347b34;
+    -fx-border-color: gray;
+    -fx-border-width: 1 1 0 0;
+}
+/* Format for row where a plan has not yet been assigned */
+.planNotAssigned { 
+    -fx-font-size: 12px;
+    -fx-base: rgb(0,0,0,0);
+    -fx-background-color: #983737;
+    -fx-border-color: gray;
+    -fx-border-width: 1 1 0 0;
+}
+
+/* Format for table row where container has arrived */ 
+.vfcRecovered {
+    -fx-font-size: 12px;
+    -fx-base: rgb(0,0,0,0);
+    -fx-background-color: 
+        linear-gradient( to top, derive(-fx-color, 35.77966101694915%) 0%, derive(-fx-color, 10.05084745762713%) 50%, derive(-fx-color, -8.559322033898283%) 50.5%, derive(-fx-color, -30.0%) 100%);                   
+    -fx-background-color: rgba(0,0,0,.75);        
+    -fx-border-color: gray;
+    -fx-border-width: 1 1 0 0;  
+}
+
+.working {
+    -fx-background-color: rgba(255, 255, 0, .6);
+    /*-fx-control-inner-background: rgb(255, 248, 33);*/
+    -fx-accent: derive(-fx-control-inner-background, -40%);
+    -fx-cell-hover-color:  #F04646;
+    -fx-cell-focus-inner-border: #85b9de;
+    -fx-alignment: CENTER;
+    /*-fx-font-weight: bold;*/
+}
+
+.waiting {
+        -fx-background-color: rgba(255, 0, 0, .6);
+    /*-fx-control-inner-background: rgb(255, 248, 33);*/
+   /* -fx-accent: derive(-fx-control-inner-background, -10%);*/
+    -fx-cell-hover-color: #F04646;
+    -fx-cell-focus-inner-border: #85b9de;
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+    /*-fx-font-weight: bold;*/
+}
+
+.done {
+    -fx-background-color: rgba(51, 102, 255, .6);
+    /*-fx-control-inner-background: rgb(255, 248, 33);*/
+    -fx-text-fill: white;
+    -fx-accent: derive(-fx-control-inner-background, -40%);
+    -fx-cell-hover-color: #F04646;
+    -fx-cell-focus-inner-border: #85b9de;
+    -fx-alignment: CENTER;
+    /*-fx-font-weight: bold;*/
+}
+
+
+.bitenext {
+    -fx-background-color:  rgba(255, 192, 0, .8);
+}
+
+
+.bitedone {
+    -fx-background-color:  rgba(0, 204, 102, .8);
+}
+
+.taskmark{
+    -fx-background-color:rgba(153, 153, 153, .8);
+}
+
+
+.Important {
+    -fx-background-color:#ff8080;
+}
+.Urgent {
+    -fx-background-color:#fbf227;
+}
+
+.DailyWin {
+    -fx-background-color:#40ff00;
+}
+
+
+.open {
+    -fx-alignment: CENTER;
+    /*-fx-font-weight: bold;*/
+}
+
+.center {
+    -fx-alignment: CENTER;
+}
+
+
+
+
+.righta {
+    -fx-alignment: center-right;
+}
+
+.rightb {
+    -fx-alignment: center-right;
+    -fx-font-weight: bold;
+}
+
+.completedbite {
+   /* -fx-background-color:rgba(131, 142, 142, .60);
+    -fx-control-inner-background: rgb(255, 248, 33);
+    -fx-accent: derive(-fx-control-inner-background, -10%);
+    -fx-cell-hover-color: #F04646;
+    -fx-cell-focus-inner-border: #85b9de;
+    -fx-text-fill: white;*/
+    
+     -fx-control-inner-background: rgb(255,239,142);
+     -fx-cell-hover-color: derive(-fx-control-inner-background, 100%);
+     -fx-accent: derive(-fx-control-inner-background, -10%);
+     -fx-text-fill: white;
+}
+
+
+.table-row-cell {
+    -fx-cell-size: 25px;
+}
+
+
+
+
+.nextmilestones .column-header .label  {
+    -fx-alignment: TOP_LEFT;
+}

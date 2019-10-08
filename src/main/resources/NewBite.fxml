@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="104.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.NewBiteController">
+   <children>
+      <Text layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New Bite" />
+      <TextField fx:id="edName" layoutX="78.0" layoutY="27.0" prefHeight="26.0" prefWidth="510.0" />
+      <Button fx:id="btOK" layoutX="523.0" layoutY="65.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="26.0" prefWidth="60.0" text="OK" />
+      <Button fx:id="btCancel" layoutX="445.0" layoutY="65.0" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
+      <Separator layoutX="22.0" layoutY="11.0" prefHeight="5.0" prefWidth="562.0" />
+   </children>
+</AnchorPane>

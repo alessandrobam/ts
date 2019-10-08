@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="104.0" prefWidth="431.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.QuickFindController">
+   <children>
+      <Text layoutX="14.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Find:" />
+      <TextField fx:id="textFind" layoutX="49.0" layoutY="27.0" prefHeight="25.0" prefWidth="367.0" />
+      <Button fx:id="btOK" layoutX="364.0" layoutY="65.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="25.0" prefWidth="52.0" text="OK" />
+      <Button fx:id="btCancel" layoutX="292.0" layoutY="65.0" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel" />
+      <Separator layoutX="22.0" layoutY="13.0" prefHeight="3.0" prefWidth="399.0" />
+   </children>
+</AnchorPane>

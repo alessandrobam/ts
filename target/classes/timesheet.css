@@ -1,0 +1,16 @@
+.root {
+  -fx-font:12px Vivaldi;
+}
+
+
+.table-view .column-header.label {
+    
+    -fx-font-size:12px;
+	
+
+}
+
+.tabletasks {
+   /*-fx-font: 11px "Arial";*/
+   -fx-font-size: 12px;
+}

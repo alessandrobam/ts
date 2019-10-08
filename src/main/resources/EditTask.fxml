@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="198.0" prefWidth="599.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.EditTaskController">
+   <top>
+      <AnchorPane prefHeight="145.0" prefWidth="645.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text layoutX="341.0" layoutY="45.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Role" wrappingWidth="61.90625" />
+            <Text layoutX="15.0" layoutY="89.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasks" wrappingWidth="61.90625" />
+            <Text layoutX="16.0" layoutY="121.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags " wrappingWidth="64.90625" />
+            <TextField fx:id="edName" layoutX="59.0" layoutY="72.0" prefHeight="25.0" prefWidth="507.0" />
+            <TextField fx:id="edTag" layoutX="59.0" layoutY="104.0" prefHeight="25.0" prefWidth="506.0" />
+            <Button fx:id="btOK" alignment="CENTER" layoutX="513.0" layoutY="143.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="25.0" prefWidth="52.0" text="OK" />
+            <Button fx:id="btCancel" alignment="CENTER" layoutX="438.0" layoutY="143.0" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+            <ComboBox fx:id="edRole" layoutX="415.0" layoutY="28.0" prefWidth="150.0" />
+         </children>
+      </AnchorPane>
+   </top>
+</BorderPane>

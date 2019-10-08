@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="526.0" prefWidth="745.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.GlobalSearchController">
+   <children>
+      <TextField fx:id="textFind" layoutX="14.0" layoutY="20.0" prefHeight="25.0" prefWidth="636.0" />
+      <TableView fx:id="tbReport" layoutX="15.0" layoutY="63.0" prefHeight="403.0" prefWidth="710.0">
+        <columns>
+          <TableColumn fx:id="name" prefWidth="584.0" text="Name" />
+          <TableColumn fx:id="type" prefWidth="107.0" text="Type" />
+        </columns>
+      </TableView>
+      <Button fx:id="btOK" layoutX="654.0" layoutY="482.0" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="25.0" prefWidth="70.0" text="OK" />
+      <Button fx:id="btCancel" layoutX="571.0" layoutY="482.0" mnemonicParsing="false" onAction="#cancelButtonClick" prefHeight="25.0" prefWidth="70.0" text="Cancel" />
+      <Button fx:id="btGO" layoutX="654.0" layoutY="20.0" mnemonicParsing="false" onAction="#goButtonClick" prefHeight="25.0" prefWidth="70.0" text="Go" />
+   </children>
+</AnchorPane>

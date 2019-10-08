@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="198.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.EditMasterController">
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="38.0" prefWidth="728.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="btCancel" alignment="CENTER" mnemonicParsing="false" onAction="#cancelButtonClick" text="Cancel">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btOK" alignment="CENTER" mnemonicParsing="false" onAction="#okButtonClick" prefHeight="25.0" prefWidth="52.0" text="OK">
+               <HBox.margin>
+                  <Insets left="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <top>
+      <GridPane prefHeight="139.0" prefWidth="677.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="542.0" minWidth="10.0" prefWidth="12.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="542.0" minWidth="10.0" prefWidth="469.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="542.0" minWidth="10.0" prefWidth="16.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="10.0" prefWidth="231.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="24.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="61.0" minHeight="2.0" prefHeight="20.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="67.0" minHeight="4.0" prefHeight="20.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="51.0" minHeight="1.0" prefHeight="26.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Master" wrappingWidth="61.90625" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
+            <TextField fx:id="edName" prefHeight="25.0" prefWidth="409.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Category" wrappingWidth="56.90625" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin></Text>
+            <ComboBox fx:id="edCategory" prefHeight="25.0" prefWidth="162.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Role" wrappingWidth="86.90625" GridPane.columnIndex="3" GridPane.valignment="BOTTOM" />
+            <ComboBox fx:id="edRole" prefHeight="25.0" prefWidth="162.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="OUTSIDE" strokeWidth="0.0" text="Reference" wrappingWidth="64.90625" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.valignment="BOTTOM" />
+            <TextField fx:id="edName1" prefHeight="25.0" prefWidth="455.0" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="5">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </TextField>
+         </children>
+      </GridPane>
+   </top>
+</BorderPane>
