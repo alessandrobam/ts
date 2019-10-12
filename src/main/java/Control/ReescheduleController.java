@@ -259,8 +259,11 @@ public class ReescheduleController implements Initializable {
             tDao.persist(t);
         } else {
             if (b != null) {
-                b.setDeadline(Date.valueOf(dpDate.getValue()));
-                b.incReschedule();
+            	
+            	
+            	b.incReschedule(b.getDeadline().toLocalDate(), dpDate.getValue());
+            	b.setDeadline(Date.valueOf(dpDate.getValue()));
+                
                 bDao.persist(b);
             }
         }

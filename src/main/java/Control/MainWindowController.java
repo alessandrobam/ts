@@ -687,7 +687,7 @@ public class MainWindowController implements Initializable {
 	private void setFilterText() {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-		// Duration dDays = Duration. between(bitesStart, bitesFinish);
+		// Duration dDays = Duration.between(bitesStart, bitesFinish);
 		String cText = "";
 
 		int adDays = bitesStart.compareTo(LocalDate.now());
@@ -2351,9 +2351,9 @@ public class MainWindowController implements Initializable {
 			
 		}else if (item instanceof bite) {
 			locateBiteParent((bite) item, true);
-			
+			((bite)item).incReschedule( ((bite)item).getDeadline().toLocalDate(), date);
 			((bite)item).setDeadline(Date.valueOf(date));
-			((bite)item).incReschedule();
+			
 		    task Task = getCurrentTask();
 		    Task.setDeadline(Date.valueOf(date));
 			tDao.persist(Task);
