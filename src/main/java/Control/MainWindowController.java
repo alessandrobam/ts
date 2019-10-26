@@ -1913,11 +1913,21 @@ public class MainWindowController implements Initializable {
 					break;
 				case DOWN:
 					if (event.isShortcutDown()) {
-//						System.out.println("General Script");
-						String currentPath = openDir(true, true);
-						String generalScript = removeLimiteChars(getQuickCopy(3)).replace("{}",currentPath); 
-//						System.out.println(generalScript);
-						run(generalScript);
+						if (event.isShiftDown()) {
+							System.out.println("General Script");
+							String currentPath = openDir(true, true);
+							String generalScript = removeLimiteChars(getQuickCopy(6)).replace("{}",currentPath); 
+//							System.out.println(generalScript);
+							run(generalScript);							
+						}else
+						{
+							System.out.println("General Script");
+							String currentPath = openDir(true, true);
+							String generalScript = removeLimiteChars(getQuickCopy(3)).replace("{}",currentPath); 
+//							System.out.println(generalScript);
+							run(generalScript);
+						}
+//						
 						event.consume();
 						
 					}else {
@@ -3055,28 +3065,41 @@ public class MainWindowController implements Initializable {
 		
 		
 		System.out.println("Now running --->" + command);
-		    Process p = Runtime.getRuntime().exec(command);
-			
-	    	BufferedReader stdInput = new BufferedReader(new 
-			     InputStreamReader(p.getInputStream()));
+		    
+//		   Process p = Runtime.getRuntime().exec("runas /profile /user:Administrator cmd.exe /c"  + command); 
+		
+		
+//		Process p = Runtime.getRuntime().exec("c:/elevate Rundll32.exe " + command);
+		
+		ProcessBuilder p = new ProcessBuilder(new String[] { "cmd.exe", "/C", command});
+//		ProcessBuilder p = new ProcessBuilder(new String[] { command});
+		Process newProcess = p.start();
+		
+		
+		
+//		   Process p = Runtime.getRuntime().exec(command );
+		    
+		
+//	    	BufferedReader stdInput = new BufferedReader(new 
+//			     InputStreamReader(p.);
 
-			BufferedReader stdError = new BufferedReader(new 
-			     InputStreamReader(p.getErrorStream()));
+//			BufferedReader stdError = new BufferedReader(new 
+//			     InputStreamReader(p.getErrorStream()));
 
 			// read the output from the command
 			System.out.println("Here is the standard output of the command:\n");
 			String s = null;
-			while ((s = stdInput.readLine()) != null) {
+//			while ((s = stdInput.readLine()) != null) {
 			    System.out.println(s);
-			}
+//			}
 
 			// read any errors from the attempted command
-			System.out.println("Here is the standard error of the command (if any):\n");
-			while ((s = stdError.readLine()) != null) {
-			    System.out.println(s);
-			}
+//			System.out.println("Here is the standard error of the command (if any):\n");
+//			while ((s = stdError.readLine()) != null) {
+//			    System.out.println(s);
+//			}
 			
-			statusBarAnnoucement ("Automation complete.");
+//			statusBarAnnoucement ("Automation complete.");
 			
 //			Util.AlertMessagebox(stdInput.toString());
 

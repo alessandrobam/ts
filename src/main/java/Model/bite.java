@@ -298,12 +298,17 @@ public class bite extends todoitem {
     	  
     	if (this.getLastreschedule() != null &&  this.getLastreschedule().toLocalDate().compareTo(LocalDate.now()) != 0) { //True if reschedule happened
     		
-    		reschedules = reschedules + 1;
-    		totalDays = totalDays +  daysAdded;
-    		
-    		String rescheduleStamp = " [" + reschedules  + ", "+ totalDays  +"d]";  
-        	this.setName(this.getName().substring(0, lo-1) + rescheduleStamp )  ;
-        	this.setLastreschedule(Date.valueOf(LocalDate.now().minusDays(1)));
-    	}
+    			reschedules = reschedules + 1;
+    		}
+    	
+   		
+    		if  (reschedules > 0) {
+	    		totalDays = totalDays +  daysAdded;
+	    		
+	    		String rescheduleStamp = " [" + reschedules  + ", "+ totalDays  +"d]";  
+	        	this.setName(this.getName().substring(0, lo-1) + rescheduleStamp )  ;
+	        	this.setLastreschedule(Date.valueOf(LocalDate.now()));
+    		}
     }
 }
+	
