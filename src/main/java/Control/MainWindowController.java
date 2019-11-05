@@ -441,6 +441,13 @@ public class MainWindowController implements Initializable {
 		bitesStart = bitesFinish.plusDays(-6);
 		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true);
 	}
+	
+	// level 3 milestone filter
+		private void currentWeeksMilestones2() throws SQLException {
+			bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+			bitesStart = bitesFinish.plusDays(-6);
+			getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true);
+		}
 
 	// level 4 milestone filter
 	private void AllOpenMilestones() throws SQLException {
@@ -1010,7 +1017,11 @@ public class MainWindowController implements Initializable {
 		dbresult dbs = null;
 		ResultSet rs = null;
 
-		dbs = miDao.getallrecords();
+		LocalDate pDate2 = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
+		LocalDate pDate1 = pDate2.plusDays(-6);
+		
+		dbs = miDao.current_deliverables(pDate1, pDate2);
+		
 		milestones miles;
 		if (dbs.getRs() != null) {
 			while (dbs.getRs().next()) {
@@ -1045,8 +1056,8 @@ public class MainWindowController implements Initializable {
 		}
 
 		if (onlyMilestones) {
-			pLike = "milestone%";
-			pLike2 = "m - %";
+			pLike = "deliverable%";
+			pLike2 = "d - %";
 		} else {
 			pLike = "%";
 			pLike2 = "%";

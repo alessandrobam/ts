@@ -26,6 +26,9 @@ public class biteDao extends GenericDao {
 
 	private final String allRecords_for_master = "SELECT a.*,datediff(a.deadline,sysdate()) countdown,   m.name mastername, t.name taskname FROM actions a, tasks t, mastertasks m WHERE a.taskid = t.id and t.masterid = a.masterid and (a.name like ? or a.name like ?)  and m.id = a.masterid and a.masterid=? order by a.status, a.deadline desc, a.created";
 	private final String alllateRecords_for_master = "SELECT a.*,datediff(a.deadline,sysdate()) countdown,   m.name mastername, t.name taskname FROM actions a, tasks t, mastertasks m WHERE a.taskid = t.id and t.masterid = a.masterid and (a.name like ? or a.name like ?) and m.id = a.masterid and a.masterid=? and a.deadline <= sysdate() and a.status < 3 order by a.status, a.deadline desc, a.created";
+	
+	
+	
 
 	private final String allRecords_for_task = "SELECT a.*, datediff(a.deadline,sysdate()) countdown,  m.name mastername, t.name taskname FROM actions a, tasks t, mastertasks m WHERE a.taskid = t.id and t.masterid = a.masterid and (a.name like ? or a.name like ?) and m.id = a.masterid and a.masterid=? and a.taskid=? order by a.status, a.deadline  desc, a.created";
 
@@ -64,6 +67,9 @@ public class biteDao extends GenericDao {
 
 	}
 
+
+
+	
 	public dbresult selectrecords_for_master(String pLike, String pLike2, int pMasterid) throws SQLException {
 		System.out.println("Select record");
 		return super.getrecord(allRecords_for_master, pLike, pLike2, pMasterid);
