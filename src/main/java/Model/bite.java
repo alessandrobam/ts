@@ -253,6 +253,11 @@ public class bite extends todoitem {
 		this.setTaskname(taskname);
 		this.setGolden(golden);
 		this.setCountdown(countdown);
+		
+		
+		
+	
+		
 	}
 
 	public void incReschedule(LocalDate prevDeadline, LocalDate newDeadline)
