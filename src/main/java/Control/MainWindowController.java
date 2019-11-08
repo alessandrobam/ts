@@ -208,6 +208,8 @@ public class MainWindowController implements Initializable {
 	@FXML
 	private TableColumn<worksession, String> ws_totalCol;
 
+	
+	
 	@FXML
 	TableView tbBites;
 
@@ -226,24 +228,38 @@ public class MainWindowController implements Initializable {
 	private TableColumn<bite, String> bite_GoldenCol;
 	@FXML
 	private TableColumn<bite, String> bite_nextCol;
+	
+	
 
 	public enum BITE_FILTER_OPTION {
 
 		ALL, TASK_SPECIFIC, MASTER_SPECIFIC, INTERVAL, TASK_SPECIFIC_LATE, MASTER_SPECIFIC_LATE
 	};
 
+	
 	@FXML
 	public TableView tbMiles;
 
-	@FXML
-	private TableColumn<milestones, String> miles_goldenCol;
 
 	@FXML
-	private TableColumn<milestones, String> miles_statusCol;
-
+	private TableColumn<bite, String> deliverable_statusCol;
 	@FXML
-	private TableColumn<milestones, String> miles_name;
-
+	private TableColumn<bite, String> deliverable_deadlineCol;
+	@FXML
+	private TableColumn<bite, String> deliverable_weekdayCol;
+	@FXML
+	private TableColumn<bite, String> deliverable_nameCol;
+	@FXML
+	private TableColumn<bite, String> deliverable_CDCol;
+	@FXML
+	private TableColumn<bite, String> deliverable_GoldenCol;
+	
+	
+	
+	
+	
+	
+	
 	private LocalDate bitesStart;
 	private LocalDate bitesFinish;
 
@@ -376,59 +392,164 @@ public class MainWindowController implements Initializable {
 		textTotalTaskCountAndMarked.setText(String.valueOf(marked) + "/" + String.valueOf(c.size()));
 	}
 
-	private void biteFilter(Boolean onlyMilestone, BITE_FILTER_OPTION filterType) throws IOException, SQLException {
-		getBiteData(filterType, true, false, onlyMilestone);
-		setFilterText();
-	}
-
+	
+	
+	
+	
 	@FXML
-	private void biteFilterBackOneDay(KeyEvent event) throws IOException, SQLException {
+	private void biteFilterBackOneDay() throws IOException, SQLException {
 		bitesStart = bitesStart.plusDays(-1);
 		bitesFinish = bitesStart;
-		vCurrWeekPartialOn = false;
-		// tfBiteFilter.setText(bitesStart.toString());
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, event.isShiftDown());
-		setFilterText();
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
 	}
 
 	@FXML
-	private void biteFilterFwdOneDay(KeyEvent event) throws IOException, SQLException {
+	private void biteFilterFwdOneDay() throws IOException, SQLException {
 		bitesStart = bitesStart.plusDays(1);
 		bitesFinish = bitesStart;
-		// tfBiteFilter.setText(bitesStart.toString());
-		vCurrWeekPartialOn = false;
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, event.isShiftDown());
-		setFilterText();
+		
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
+
 	}
+	
+	
+	private void biteForTask(biteDao.FilterModifier mod) throws SQLException {
+		showBites(mod, biteDao.task_id, getCurrentMaster().getId(), getCurrentTask().getId() );
+	}
+	
+   private void biteForMaster(biteDao.FilterModifier mod) throws SQLException {
+	   showBites(mod, biteDao.master_id, getCurrentMaster().getId());
+	}
+
+
+	
+   private void ctrl_shift_right() throws IOException, SQLException {
+       if (tbBites.isFocused() || tbMiles.isFocused()) { biteNextKeeDay();
+		} else {if (tbTasks.isFocused()) { biteForTask(biteDao.FilterModifier.OPEN);}
+		  else {if (tbMasterTasks.isFocused()) { biteForMaster(biteDao.FilterModifier.OPEN);}
+		  }		
+		}
+   }
+   
+   private void ctrl_right () throws IOException, SQLException {
+		  
+		        if (tbBites.isFocused() || tbMiles.isFocused()) { biteFilterFwdOneWeek();
+		} else {if (tbTasks.isFocused()) { biteForTask(biteDao.FilterModifier.ALL);}
+		  else {if (tbMasterTasks.isFocused()) { biteForMaster(biteDao.FilterModifier.ALL);}
+		  }		
+		}
+		
+	}
+	
 
 	@FXML
-	private void biteFilterBackOneWeek(KeyEvent event) throws IOException, SQLException {
-		bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY)).plusDays(-7);
-		bitesStart = bitesFinish.plusDays(-6);
-		vCurrWeekPartialOn = false;
-		// tfBiteFilter.setText("S: " + bitesStart.toString() + " f: " +
-		// bitesFinish.toString());
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, event.isShiftDown());
+	private void biteFilterToday(KeyEvent event) throws IOException, SQLException {
+		
+		bitesFinish = LocalDate.now();
+		bitesStart = LocalDate.now();
+		
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
+		
+		
 	}
 
+	
+	
+	private void biteLastKeeDay(KeyEvent event ) throws IOException, SQLException {
+		
+		bitesStart = bitesStart.plusDays(-7);
+		bitesFinish = bitesStart;
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
+		
+		
+		
+		
+	}
+
+	private void biteNextKeeDay() throws IOException, SQLException {
+		bitesStart = bitesStart.plusDays(+7);
+		bitesFinish = bitesStart;
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
+	}
+	
+	
+	private void biteFilterTheWeek() throws IOException, SQLException {
+
+		bitesFinish = Util.weekEnd(bitesStart);
+		bitesStart = Util.weekStart(bitesStart);
+		
+		if (LocalDate.now().isAfter(bitesStart) && LocalDate.now().isBefore(bitesFinish)) {
+			if (!vCurrWeekPartialOn) {
+				vCurrWeekPartialOn = true;
+				bitesFinish = bitesFinish = LocalDate.now();
+			} else {
+				vCurrWeekPartialOn = false;
+			}
+		}
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
+	}
+	
+	
+	private void biteFilterFwdOneWeek() throws IOException, SQLException {
+
+		bitesFinish = Util.weekEnd(bitesFinish).plusDays(+7);
+		bitesStart = Util.weekStart(bitesFinish);
+		
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
+	}
+
+	
+	private void biteFilterBackOneWeek() throws IOException, SQLException {
+		
+		bitesFinish = Util.weekEnd(bitesFinish).plusDays(-7);
+		bitesStart = Util.weekStart(bitesFinish);
+		
+		showBites(biteDao.FilterModifier.ALL, biteDao.dates_between, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish));
+	}
+
+	
+	
+	
+	private void biteFilter(Boolean onlyMilestone, BITE_FILTER_OPTION filterType, TableView tbTable ) throws IOException, SQLException {
+		getBiteData(filterType, true, false, onlyMilestone, tbTable);
+		setFilterText();
+		
+		showBites(biteDao.FilterModifier.OPEN, biteDao.task_id, getCurrentTask().getMasterid(), getCurrentTask().getId());
+	}
+
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
 	// level 1 milestone filter
-	private void currentWeeksOpenMilestones() throws SQLException {
+	private void currentWeeksOpenMilestones(TableView tbTable ) throws SQLException {
 		bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 		bitesStart = bitesFinish.plusDays(-6);
 		System.out.println("CurrentWeekOpenMilestons " + bitesStart + "  " + bitesFinish);
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, true);
+		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, true, tbTable);
 
 	}
 
 	// level 2 milestone filter
-	private void currentAllOpenMilestones() throws SQLException {
+	private void currentAllOpenMilestones(TableView tbTable ) throws SQLException {
 		LocalDate b_bitesFinish = bitesFinish;
 		LocalDate b_bitesStart = bitesStart;
 
 		bitesFinish = bitesFinish.plusDays(365);
 		bitesStart = bitesFinish.plusDays(-6);
 		System.out.println("CurrentWeekOpenMilestons " + bitesStart + "  " + bitesFinish);
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, true);
+		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, true, tbTable);
 
 		bitesFinish = b_bitesFinish;
 		bitesStart = b_bitesStart;
@@ -436,27 +557,27 @@ public class MainWindowController implements Initializable {
 	}
 
 	// level 3 milestone filter
-	private void currentWeeksMilestones() throws SQLException {
+	private void currentWeeksMilestones(TableView tbTable ) throws SQLException {
 		bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 		bitesStart = bitesFinish.plusDays(-6);
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true);
+		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true, tbTable);
 	}
 	
 	// level 3 milestone filter
-		private void currentWeeksMilestones2() throws SQLException {
+		private void currentWeeksMilestones2(TableView tbTable ) throws SQLException {
 			bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 			bitesStart = bitesFinish.plusDays(-6);
-			getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true);
+			getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true, tbTable);
 		}
 
 	// level 4 milestone filter
-	private void AllOpenMilestones() throws SQLException {
+	private void AllOpenMilestones(TableView tbTable ) throws SQLException {
 		LocalDate b_bitesFinish = bitesFinish;
 		LocalDate b_bitesStart = bitesStart;
 
 		bitesFinish = bitesFinish.plusDays(6000);
 		bitesStart = bitesFinish.plusDays(-60000);
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, true);
+		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, true, tbTable);
 
 		bitesFinish = b_bitesFinish;
 		bitesStart = b_bitesStart;
@@ -464,7 +585,7 @@ public class MainWindowController implements Initializable {
 	}
 
 	// level 4 milestone filter
-	private void AllMilestones() throws SQLException {
+	private void AllMilestones (TableView tbTable ) throws SQLException {
 
 		LocalDate b_bitesFinish = bitesFinish;
 		LocalDate b_bitesStart = bitesStart;
@@ -472,89 +593,54 @@ public class MainWindowController implements Initializable {
 		bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
 		bitesStart = bitesFinish.plusDays(-60000);
 
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true);
+		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, true, tbTable);
 
 		bitesFinish = b_bitesFinish;
 		bitesStart = b_bitesStart;
 
 	}
 
-	@FXML
-	private void biteFilterFwdOneWeek(KeyEvent event) throws IOException, SQLException {
 
-		bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY)).plusDays(+7);
-		bitesStart = bitesFinish.plusDays(-6);
 
-		// tfBiteFilter.setText("S: " + bitesStart.toString() + " f: " +
-		// bitesFinish.toString());
-		vCurrWeekPartialOn = false;
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, event.isShiftDown());
-	}
 
-	@FXML
-	private void biteFilterToday(KeyEvent event) throws IOException, SQLException {
-		bitesFinish = LocalDate.now();
-		bitesStart = LocalDate.now();
-		vCurrWeekPartialOn = false;
-		// tfBiteFilter.setText("S: " + bitesStart.toString() + " f: " +
-		// bitesFinish.toString());
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, event.isShiftDown());
-		setFilterText();
-	}
 
-	private void biteLastKeeDay(KeyEvent event) throws IOException, SQLException {
-		bitesStart = bitesStart.plusDays(-7);
-		bitesFinish = bitesStart;
-		// tfBiteFilter.setText(bitesStart.toString());
-		vCurrWeekPartialOn = false;
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, event.isShiftDown());
-		setFilterText();
-	}
-
-	private void biteNextKeeDay(KeyEvent event) throws IOException, SQLException {
-		bitesStart = bitesStart.plusDays(+7);
-		bitesFinish = bitesStart;
-		// tfBiteFilter.setText(bitesStart.toString());
-		vCurrWeekPartialOn = false;
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, false, event.isShiftDown());
-		setFilterText();
-	}
-
-	private void biteAllPending(KeyEvent event) throws IOException, SQLException {
+	private void biteAllPending(KeyEvent event, TableView tbTable ) throws IOException, SQLException {
 		bitesStart = LocalDate.now().plusDays(-3000);
 		bitesFinish = LocalDate.now().plusDays(-1);
 		// tfBiteFilter.setText("All peding bites");
 		vCurrWeekPartialOn = false;
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, event.isShiftDown());
+		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, true, event.isShiftDown(), tbTable);
 		setFilterText();
 	}
 
-	@FXML
-	private void biteFilterTheWeek(KeyEvent event) throws IOException, SQLException {
-		bitesFinish = bitesFinish.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
-		bitesStart = bitesFinish.plusDays(-6);
-		boolean vOnlyOpen = false;
 
-		if (LocalDate.now().isAfter(bitesStart) && LocalDate.now().isBefore(bitesFinish)) {
-			if (!vCurrWeekPartialOn) {
-				vCurrWeekPartialOn = true;
-				bitesFinish = bitesFinish = LocalDate.now();
-				vOnlyOpen = true;
-			} else {
-				vCurrWeekPartialOn = false;
-			}
-		}
-		// tfBiteFilter.setText("S: " + bitesStart.toString() + " f: " +
-		// bitesFinish.toString());
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, true, vOnlyOpen, event.isShiftDown());
-	}
 
 	@FXML
-	private void biteFilterAll(KeyEvent event) throws IOException, SQLException {
-		getBiteData(BITE_FILTER_OPTION.ALL, true, false, event.isShiftDown());
+	private void biteFilterAll(KeyEvent event, TableView tbTable ) throws IOException, SQLException {
+		getBiteData(BITE_FILTER_OPTION.ALL, true, false, event.isShiftDown(), tbTable);
 		vCurrWeekPartialOn = false;
 		// tfBiteFilter.setText("All pending bites");
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@FXML
 	private void testbutton(ActionEvent event) throws IOException, SQLException {
@@ -942,14 +1028,10 @@ public class MainWindowController implements Initializable {
 		bite_nameCol.setCellValueFactory(new PropertyValueFactory<>(BitevariableNames[i++]));
 		bite_CDCol.setCellValueFactory(new PropertyValueFactory<>(BitevariableNames[i++]));
 		bite_GoldenCol.setCellValueFactory(new PropertyValueFactory<>(BitevariableNames[i++]));
-
 		bite_deadlineCol.setCellFactory(new DayMonthCellFactory());
 		bite_weekdayCol.setCellFactory(new WeekDayCellFactory());
-
 		bite_statusCol.setCellFactory(new StatusCellFactory());
-
 		bite_nextCol.setCellFactory(new nextCellFactory());
-
 		bite_GoldenCol.setCellFactory(new goldenCellFactory());
 
 		String[] WsVariableNames = { "id", "date", "date", "start", "finish", "totaltext" };
@@ -963,16 +1045,22 @@ public class MainWindowController implements Initializable {
 		ws_finishCol.setCellValueFactory(new PropertyValueFactory<>(WsVariableNames[i++]));
 		ws_totalCol.setCellValueFactory(new PropertyValueFactory<>(WsVariableNames[i++]));
 
-		String[] milesVariableNames = { "golden", "status", "name" };
+		String[] deliverableVariableNames = {"status", "deadline", "deadline", "name", "countdown", "golden" };
 
 		i = 0;
+		
+		deliverable_statusCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
+		deliverable_deadlineCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
+		deliverable_weekdayCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
+		deliverable_nameCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
+		deliverable_CDCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
+		deliverable_GoldenCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
+		deliverable_deadlineCol.setCellFactory(new DayMonthCellFactory());
+		deliverable_weekdayCol.setCellFactory(new WeekDayCellFactory());
+		deliverable_statusCol.setCellFactory(new StatusCellFactory());
+		deliverable_GoldenCol.setCellFactory(new goldenCellFactory());
 
-		miles_goldenCol.setCellValueFactory(new PropertyValueFactory<>(milesVariableNames[i++]));
-		miles_statusCol.setCellValueFactory(new PropertyValueFactory<>(milesVariableNames[i++]));
-		miles_name.setCellValueFactory(new PropertyValueFactory<>(milesVariableNames[i++]));
 
-		miles_statusCol.setCellFactory(new StatusCellFactory());
-		miles_goldenCol.setCellFactory(new goldenCellFactory());
 
 	}
 
@@ -1010,36 +1098,112 @@ public class MainWindowController implements Initializable {
 		tbWs.setItems(tvWorkSessionData);
 	}
 
-	private void getMilestones() throws SQLException {
-		ObservableList<milestones> tvMilesData = FXCollections.observableArrayList();
-		miDao = new milestoneDao(this.conn);
+	
+	private void bringPlanningGoals() throws SQLException {
+		ObservableList<bite> tvBiteData = FXCollections.observableArrayList();
+		bDao = new biteDao(this.conn);
+		dbresult dbs = null;
+		ResultSet rs = null;
+		
+		LocalDate dateStart = Util.weekStart(LocalDate.now());
+		LocalDate dateEnd = Util.weekEnd(LocalDate.now());
+		
+//		dbs = bDao.showBites(dateStart, dateEnd, false);
+		
+//		populateTable (dbs, tvBiteData, tbMiles, false );
+		
+	}
+	
+	
+	
+	private void populateTable(dbresult dbs, ObservableList tvObservable, TableView tbTable, boolean claimfocus) throws SQLException {
+		if (dbs.getRs() != null) {
+			while (dbs.getRs().next()) {
+				tvObservable.addAll(createBite(dbs.getRs()));
+			}
 
+			dbs.getRs().close();
+			dbs.getStm().close();
+
+			tbTable.setItems(tvObservable);
+			// BiteListed.setText(String.valueOf(tvBiteData.size()));
+
+			if (claimfocus) {
+				focusAndSelect(tbBites);
+
+				if (tbTable.getSelectionModel().getFocusedIndex() < 0) {
+					tbTable.getSelectionModel().select(0);
+				}
+			}
+		}
+	}
+	
+	
+	private Object[] getNewPar (Object[] parametros, Object... newParameters) {
+		Object[] newPar = new Object[parametros.length + newParameters.length];
+		System.arraycopy(parametros, 0, newPar, 0, parametros.length);
+		
+		for (int i = 0 ; i < newParameters.length; i++) {
+			newPar[parametros.length +  i] =  newParameters[i];
+		}
+		
+		return newPar;
+	}
+	
+	private void showBites(biteDao.FilterModifier modifier, String filter, Object... parametros) throws SQLException {
+		
+		//This method is used to load both tbBites and tbMiles. It will only serve tbMiles if it is focused, otherwise it will always serve tbBites.
+		
+		biteDao.Sources source = (tbMiles.isFocused()) ? biteDao.Sources.PLANNING : biteDao.Sources.ACTION; 
+		
+		biteDao.FilterModifier[] modifiers = biteDao.FilterModifier.values();
+		
+	    switch (modifier) {
+	        case ALL:
+	        	filter = filter;
+	        	break;
+	        case LATE:
+	        	filter = filter  + biteDao.dates_late;
+	        	break;
+	        case OPEN:
+	        	filter = filter  + biteDao.status_range;
+	        	parametros = getNewPar (parametros, 1, 2);
+	        	break;
+	    }
+		
+		
+		ObservableList<bite> tvBiteData = FXCollections.observableArrayList();	
 		dbresult dbs = null;
 		ResultSet rs = null;
 
-		LocalDate pDate2 = LocalDate.now().with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));
-		LocalDate pDate1 = pDate2.plusDays(-6);
-		
-		dbs = miDao.current_deliverables(pDate1, pDate2);
-		
-		milestones miles;
+		dbs = bDao.getBites( source,  filter, parametros);
+				
 		if (dbs.getRs() != null) {
 			while (dbs.getRs().next()) {
-
-				miles = createMilestones(dbs.getRs());
-				tvMilesData.addAll(miles);
+				tvBiteData.addAll(createBite(dbs.getRs()));
 			}
-			dbs.getRs().close();
 
+			dbs.getRs().close();
 			dbs.getStm().close();
 
-			tbMiles.setItems(tvMilesData);
+			if (source == biteDao.Sources.PLANNING) {  
+			   tbMiles.setItems(tvBiteData);
+			   focusAndSelect(tbMiles);
+		    } else
+		    {
+		       tbBites.setItems(tvBiteData);
+		       focusAndSelect(tbBites);
+		    }
 		}
-
+		
+		setFilterText();
+				
+		
 	}
 
-	private void getBiteData(BITE_FILTER_OPTION opt, boolean claimfocus, boolean onlyOpen, boolean onlyMilestones)
+	private void getBiteData(BITE_FILTER_OPTION opt, boolean claimfocus, boolean onlyOpen, boolean onlyMilestones, TableView tbTable )
 			throws SQLException {
+		
 		ObservableList<bite> tvBiteData = FXCollections.observableArrayList();
 
 		int statusIni = 1;
@@ -1075,6 +1239,7 @@ public class MainWindowController implements Initializable {
 			break;
 		case TASK_SPECIFIC:
 			dbs = bDao.selectrecords_for_task(pLike, pLike2, getCurrentTask().getMasterid(), getCurrentTask().getId());
+			
 			break;
 		case TASK_SPECIFIC_LATE:
 			dbs = bDao.selectlaterecords_for_task(pLike, pLike2, getCurrentTask().getMasterid(),
@@ -1089,7 +1254,10 @@ public class MainWindowController implements Initializable {
 			break;
 
 		case INTERVAL:
-			dbs = bDao.selectrecords(pLike, pLike2, bitesStart, bitesFinish, statusIni, statusFim);
+			dbs = bDao.getBites(biteDao.Sources.ACTION, biteDao.dates_between + biteDao.status_range, Util.sqlDate(bitesStart), Util.sqlDate(bitesFinish), statusIni, statusFim);
+			
+			
+			
 			break;
 		}
 		if (dbs.getRs() != null) {
@@ -1098,18 +1266,18 @@ public class MainWindowController implements Initializable {
 //				System.out.println("One Record ");
 
 			}
-			dbs.getRs().close();
 
+			dbs.getRs().close();
 			dbs.getStm().close();
 
-			tbBites.setItems(tvBiteData);
+			tbTable.setItems(tvBiteData);
 			// BiteListed.setText(String.valueOf(tvBiteData.size()));
 
 			if (claimfocus) {
 				focusAndSelect(tbBites);
 
-				if (tbBites.getSelectionModel().getFocusedIndex() < 0) {
-					tbBites.getSelectionModel().select(0);
+				if (tbTable.getSelectionModel().getFocusedIndex() < 0) {
+					tbTable.getSelectionModel().select(0);
 				}
 			}
 		}
@@ -1190,8 +1358,12 @@ public class MainWindowController implements Initializable {
 		bitesStart = LocalDate.now();
 		bitesFinish = LocalDate.now();
 
-		getBiteData(BITE_FILTER_OPTION.INTERVAL, false, false, false);
-		getMilestones();
+		
+		getBiteData(BITE_FILTER_OPTION.INTERVAL, false, false, false, tbBites);
+		
+		bringPlanningGoals();
+		
+		
 		getWorkSessionData(1, 4);
 
 	}
@@ -1298,10 +1470,7 @@ public class MainWindowController implements Initializable {
 
 	}
 
-	public milestones createMilestones(ResultSet rs) throws SQLException {
-		return new milestones(rs.getInt("ID"), rs.getInt("MASTERID"), rs.getInt("TASKID"), rs.getString("NAME"),
-				rs.getDate("CREATED"), rs.getDate("FINISHED"), rs.getInt("STATUS"), rs.getInt("GOLDEN"));
-	}
+
 
 	String getCurrentFileName() {
 		return getCurrentFileName(3);
@@ -1352,8 +1521,8 @@ public class MainWindowController implements Initializable {
 		return (bite) tbBites.getSelectionModel().getSelectedItem();
 	}
 
-	public milestones getCurrentMilestone() {
-		return (milestones) tbMiles.getSelectionModel().getSelectedItem();
+	public bite getCurrentMilestone() {
+		return (bite) tbMiles.getSelectionModel().getSelectedItem();
 	}
 
 	public worksession getCurrentWS() {
@@ -1833,6 +2002,9 @@ public class MainWindowController implements Initializable {
 		stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
 
 			// if key is not M, reset the filter level for milestones
+			TableView tbTable;
+			tbTable = tbBites;
+			
 			if (event.getCode() != KeyCode.K) {
 				milestoneFilterCurrentLevel = 0;
 			}
@@ -1888,18 +2060,24 @@ public class MainWindowController implements Initializable {
 					break;
 
 				case LEFT:
-					if (event.isControlDown() && event.isShiftDown()) {
-						biteLastKeeDay(event);
-					} else {
-						changeTableFocus(event);
-					}
+					         if (event.isControlDown() && event.isShiftDown()) {biteLastKeeDay(event);
+					} else { if (event.isControlDown())                        {biteFilterBackOneWeek();
+					} else { if (event.isAltDown())                            {biteFilterBackOneDay();
+					} else {                                                    changeTableFocus(event);
+					}}}
+					
 					break;
+					
+					
 				case RIGHT:
-					if (event.isControlDown() && event.isAltDown()) {
-						biteNextKeeDay(event);
-					} else {
-						changeTableFocus(event);
-					}
+					          if (event.isControlDown() && event.isShiftDown()) {ctrl_shift_right();
+					 } else { if (event.isShiftDown())                          {markasnext();;
+					 } else { if (event.isControlDown())                        {ctrl_right();
+					 } else { if (event.isAltDown())                            {biteFilterFwdOneDay();
+					 } else {                                                   changeTableFocus(event);
+						}}}}
+					
+					event.consume();
 					break;
 				case DOWN:
 					if (event.isShortcutDown()) {
@@ -1968,7 +2146,7 @@ public class MainWindowController implements Initializable {
 					if (event.isShortcutDown()) {
 						if (event.isShiftDown()) {
 							// 2019m06_01 - Now user needs to type Ctrl + Shift + A to bring all bytes
-							biteFilterAll(event);
+							biteFilterAll(event, tbTable);
 						} else {
 							runPythonScriptFileFile(getCurrentFileName(2));
 						}
@@ -1986,22 +2164,22 @@ public class MainWindowController implements Initializable {
 						switch (milestoneFilterCurrentLevel) {
 
 						case 1:
-							currentWeeksOpenMilestones();
+							currentWeeksOpenMilestones(tbTable);
 							statusBarAnnoucement("Open milestones for current week");
 							event.consume();
 							break;
 						case 2:
-							currentWeeksMilestones();
+							currentWeeksMilestones(tbTable);
 							statusBarAnnoucement("All milestones for current week");
 							event.consume();
 							break;
 						case 3:
-							AllOpenMilestones();
+							AllOpenMilestones(tbTable);
 							statusBarAnnoucement("All open milestones");
 							event.consume();
 							break;
 						case 4:
-							AllMilestones();
+							AllMilestones(tbTable);
 							statusBarAnnoucement("All milestones");
 							event.consume();
 							break;
@@ -2011,7 +2189,7 @@ public class MainWindowController implements Initializable {
 
 				case W:
 					if (event.isShortcutDown()) {
-						biteFilterTheWeek(event);
+						biteFilterTheWeek();
 					}
 					break;
 
@@ -2116,18 +2294,18 @@ public class MainWindowController implements Initializable {
 					}
 					event.consume();
 					break;
-				case RIGHT:
-					if (event.isShiftDown() && event.isAltDown()) {
-						biteFilter(false, BITE_FILTER_OPTION.TASK_SPECIFIC_LATE);
-
-					} else {
-						if (event.isShortcutDown()) {
-							biteFilter(event.isShiftDown(), BITE_FILTER_OPTION.TASK_SPECIFIC);
-
-						}
-					}
-					event.consume();
-					break;
+//				case RIGHT:
+//					if (event.isShiftDown() && event.isAltDown()) {
+//						biteFilter(false, BITE_FILTER_OPTION.TASK_SPECIFIC_LATE, tbBites);
+//
+//					} else {
+//						if (event.isShortcutDown()) {
+//							biteFilter(event.isShiftDown(), BITE_FILTER_OPTION.TASK_SPECIFIC, tbBites);
+//
+//						}
+//					}
+//					event.consume();
+//					break;
 				case SPACE:
 					if (event.isShortcutDown()) {
 						rescheduleTaskorBite(getCurrentTask(), null);
@@ -2152,6 +2330,8 @@ public class MainWindowController implements Initializable {
 		});
 
 		tbBites.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+			
+			
 			try {
 
 				if (scRescheduled.match(event)) {
@@ -2169,19 +2349,19 @@ public class MainWindowController implements Initializable {
 						}
 					}
 					if (scBitesDayAfter.match(event)) {
-						biteFilterFwdOneDay(event);
+//						biteFilterFwdOneDay();
 						event.consume();
 					} else {
 						if (scBitesDayBefore.match(event)) {
-							biteFilterBackOneDay(event);
+//							biteFilterBackOneDay();
 							event.consume();
 						} else {
 							if (scBitesWeekAfter.match(event)) {
-								biteFilterFwdOneWeek(event);
+//								biteFilterFwdOneWeek(event,tbBites);
 								event.consume();
 							} else {
 								if (scBitesWeekBefore.match(event)) {
-									biteFilterBackOneWeek(event);
+//									biteFilterBackOneWeek(event,tbBites);
 									event.consume();
 								} else {
 									if (event.getCode() == KeyCode.SPACE && !event.isShiftDown()) {
@@ -2237,12 +2417,12 @@ public class MainWindowController implements Initializable {
 																	// on
 																	// Windows
 					{
-						biteFilter(false, BITE_FILTER_OPTION.MASTER_SPECIFIC_LATE);
+//						biteFilter(false, BITE_FILTER_OPTION.MASTER_SPECIFIC_LATE,tbBites);
 					} else {
 						if (event.isShortcutDown()) // isShorcutDown --->
 													// Control on Windows
 						{
-							biteFilter(event.isShiftDown(), BITE_FILTER_OPTION.MASTER_SPECIFIC);
+//							biteFilter(event.isShiftDown(), BITE_FILTER_OPTION.MASTER_SPECIFIC,tbBites);
 						}
 					}
 					break;
@@ -2255,7 +2435,7 @@ public class MainWindowController implements Initializable {
 				case M:
 					if (event.isShortcutDown()) {
 						if (event.isAltDown()) {
-							addMilestone();
+//							addMilestone();
 						} else {
 							addBite();
 						}
@@ -2294,6 +2474,10 @@ public class MainWindowController implements Initializable {
 				case ENTER:
 					findAndSelectProjectByID(getCurrentMilestone().getMasterid(), true);
 					findAndSelectTaskByID(getCurrentMilestone().getTaskid(), true);
+					tbBites.requestFocus();
+					biteForTask(biteDao.FilterModifier.OPEN);
+					tbMiles.requestFocus();
+
 					event.consume();
 					break;
 				case SPACE:
@@ -2313,7 +2497,7 @@ public class MainWindowController implements Initializable {
 				case M:
 					if (event.isShortcutDown()) {
 						if (event.isAltDown()) {
-							addMilestone();
+//							addMilestone();
 						} else {
 							addBite();
 						}
@@ -2357,15 +2541,17 @@ public class MainWindowController implements Initializable {
 	}
 
 	private void markasnext() throws SQLException {
-		bite currBite = getCurrentBite();
-		if (currBite.getStatus() != bite.stCLOSED) {
-			if (currBite.getNext() == bite.stNOTNEXT) {
-				currBite.setNext(bite.stNEXT);
-			} else {
-				currBite.setNext(bite.stNOTNEXT);
+		if (tbBites.isFocused()) {
+			bite currBite = getCurrentBite();
+			if (currBite.getStatus() != bite.stCLOSED) {
+				if (currBite.getNext() == bite.stNOTNEXT) {
+					currBite.setNext(bite.stNEXT);
+				} else {
+					currBite.setNext(bite.stNOTNEXT);
+				}
 			}
+			bDao.persist(currBite);
 		}
-		bDao.persist(currBite);
 	}
 
 	private void gotoQuickAccessTask() throws IOException {
@@ -2518,7 +2704,7 @@ public class MainWindowController implements Initializable {
 			getCurrentMilestone().setStatus(task.stOPEN);
 			getCurrentMilestone().setFinished(null);
 		}
-		miDao.persist(getCurrentMilestone());
+		bDao.persist(getCurrentMilestone());
 	}
 
 	private void changeBiteStatus() throws SQLException {
@@ -2785,21 +2971,21 @@ public class MainWindowController implements Initializable {
 		}
 	}
 
-	private void addMilestone() throws IOException, SQLException, ParseException {
-
-		milestones b = new milestones(miDao.getnextid(), getCurrentTask().getMasterid(), getCurrentTask().getId(),
-				Util.InputText("New milestone", "What's the next milestone you hope to achieve?", "Milestone:",
-						getCurrentTask().getName()),
-				Util.DateToSQLDate(new java.util.Date()), null, task.stOPEN, 0);
-
-		if (b.getName() != "") {
-			tbMiles.getItems().add(0, b);
-			tbMiles.getSelectionModel().select(0);
-			miDao.persist(b);
-			focusAndSelect(tbMiles);
-			// logStatusChange("MILESTONE CREATED", b.getName());
-		}
-	}
+//	private void addMilestone() throws IOException, SQLException, ParseException {
+//
+//		milestones b = new milestones(miDao.getnextid(), getCurrentTask().getMasterid(), getCurrentTask().getId(),
+//				Util.InputText("New milestone", "What's the next milestone you hope to achieve?", "Milestone:",
+//						getCurrentTask().getName()),
+//				Util.DateToSQLDate(new java.util.Date()), null, task.stOPEN, 0);
+//
+//		if (b.getName() != "") {
+//			tbMiles.getItems().add(0, b);
+//			tbMiles.getSelectionModel().select(0);
+//			miDao.persist(b);
+//			focusAndSelect(tbMiles);
+//			// logStatusChange("MILESTONE CREATED", b.getName());
+//		}
+//	}
 
 	public void selectTaskById(int id) {
 		task t = null;

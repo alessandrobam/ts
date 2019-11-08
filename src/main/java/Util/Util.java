@@ -14,6 +14,9 @@ import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Properties;
@@ -57,6 +60,10 @@ static public String DateToText(Date pDate, String format) //deprecated
 		}
 	}
         
+static public java.sql.Date sqlDate(LocalDate date) {
+	return java.sql.Date.valueOf(date);
+}
+	
 
 static public boolean onWindows()
 {
@@ -205,6 +212,23 @@ public static String LimpaFileName(String fname)
     	return fname;
     }
      
+
+ public static LocalDate weekStart(LocalDate dateReference) {
+	 return dateReference.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY)).plusDays(-6);
+ }
+ 
+public static LocalDate weekEnd(LocalDate dateReference) {
+	return dateReference.with(TemporalAdjusters.nextOrSame(DayOfWeek.FRIDAY));	 
+ }
+ 
+ 
+ 
+ 
+	
+	
+	
+ 
+ 
  public static Timestamp getCurrentDateMinute() throws ParseException 
     {
     	SimpleDateFormat date_format = new SimpleDateFormat("dd/MM/yyyy HH:mm");

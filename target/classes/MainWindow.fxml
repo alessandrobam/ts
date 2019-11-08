@@ -109,11 +109,14 @@
                       <AnchorPane fx:id="apMilestones" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="180.0">
                            <children>
                               <TableView fx:id="tbMiles" prefHeight="200.0" prefWidth="200.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <columns>
-                                  <TableColumn fx:id="miles_statusCol" minWidth="0.0" prefWidth="7.0" />
-                                    <TableColumn fx:id="miles_goldenCol" minWidth="0.0" prefWidth="7.0" />
-                                  <TableColumn fx:id="miles_name" prefWidth="450.0" styleClass="nextmilestones" text="Milestones in the next 15 days" />
-                                </columns>
+                                 <columns>
+                                    <TableColumn fx:id="deliverable_statusCol" minWidth="0.0" prefWidth="7.0" />
+                                    <TableColumn fx:id="deliverable_GoldenCol" minWidth="0.0" prefWidth="7.0" />
+                                    <TableColumn fx:id="deliverable_deadlineCol" minWidth="0.0" prefWidth="71.0" text="Date" />
+                                    <TableColumn fx:id="deliverable_weekdayCol" minWidth="0.0" prefWidth="55.0" text="DoW" />
+                                    <TableColumn fx:id="deliverable_nameCol" prefWidth="463.0" text="Deliverable" />
+                                    <TableColumn fx:id="deliverable_CDCol" prefWidth="45.0" text="CD" />
+                                 </columns>
                               </TableView>
                            </children>
                         </AnchorPane>

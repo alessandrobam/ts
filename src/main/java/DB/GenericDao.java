@@ -101,6 +101,7 @@ public abstract class GenericDao {
 
         
     protected dbresult getrecord(String select_record, Object... parametros) throws SQLException {
+    	
     	PreparedStatement pstmt = getConnection().prepareStatement(select_record);
         for (int i = 0; i < parametros.length; i++) {
         pstmt.setObject(i+1, parametros[i]);
