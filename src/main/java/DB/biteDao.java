@@ -70,102 +70,7 @@ public class biteDao extends GenericDao {
 	public final static String task_id       = "       AND a.masterid = ? AND a.taskid = ? \r\n" ;
 	public final static String type_planning = "       AND a.name REGEXP '^(w|d|deliverable)\\\\s\\-'"; 
 	public final static String type_action   = "       AND not (a.name REGEXP '^(w|d|deliverable)\\\\s\\-')";
-	  	
 	
-//	
-//	private final String allRecords = "SELECT a.*,\r\n" + 
-//										"       10                              countdown2,\r\n" + 
-//										"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
-//										"       m.NAME                          mastername,\r\n" + 
-//										"       t.NAME                          taskname\r\n" + 
-//										"FROM   actions a,\r\n" + 
-//										"       tasks t,\r\n" + 
-//										"       mastertasks m\r\n" + 
-//										"WHERE  a.taskid = t.id\r\n" + 
-//										"       AND t.masterid = a.masterid\r\n" + 
-//										"       AND m.id = a.masterid\r\n" + 
-//										"ORDER  BY a.status,\r\n" + 
-//										"          a.next DESC,\r\n" + 
-//										"          a.deadline DESC,\r\n" + 
-//										"          a.created  ";
-//
-//	private final String allRecords_for_master = " SELECT a.*,\r\n" + 
-//													"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
-//													"       m.NAME                          mastername,\r\n" + 
-//													"       t.NAME                          taskname\r\n" + 
-//													"FROM   actions a,\r\n" + 
-//													"       tasks t,\r\n" + 
-//													"       mastertasks m\r\n" + 
-//													"WHERE  a.taskid = t.id\r\n" + 
-//													"       AND t.masterid = a.masterid\r\n" + 
-//													"       AND ( a.NAME LIKE ?\r\n" + 
-//													"              OR a.NAME LIKE ? )\r\n" + 
-//													"       AND m.id = a.masterid\r\n" + 
-//													"       AND a.masterid = ?\r\n" + 
-//													"ORDER  BY a.status,\r\n" + 
-//													"          a.deadline DESC,\r\n" + 
-//													"          a.created";
-//											
-//	
-//	
-//	private final String alllateRecords_for_master = " SELECT a.*,\r\n" + 
-//													"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
-//													"       m.NAME                          mastername,\r\n" + 
-//													"       t.NAME                          taskname\r\n" + 
-//													"FROM   actions a,\r\n" + 
-//													"       tasks t,\r\n" + 
-//													"       mastertasks m\r\n" + 
-//													"WHERE  a.taskid = t.id\r\n" + 
-//													"       AND t.masterid = a.masterid\r\n" + 
-//													"       AND ( a.NAME LIKE ?\r\n" + 
-//													"              OR a.NAME LIKE ? )\r\n" + 
-//													"       AND m.id = a.masterid\r\n" + 
-//													"       AND a.masterid = ?\r\n" + 
-//													"       AND a.deadline <= Sysdate()\r\n" + 
-//													"       AND a.status < 3\r\n" + 
-//													"ORDER  BY a.status,\r\n" + 
-//													"          a.deadline DESC,\r\n" + 
-//													"          a.created  ";
-//											
-//	
-//	private final String allRecords_for_task = " SELECT a.*,\r\n" + 
-//												"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
-//												"       m.NAME                          mastername,\r\n" + 
-//												"       t.NAME                          taskname\r\n" + 
-//												"FROM   actions a,\r\n" + 
-//												"       tasks t,\r\n" + 
-//												"       mastertasks m\r\n" + 
-//												"WHERE  a.taskid = t.id\r\n" + 
-//												"       AND t.masterid = a.masterid\r\n" + 
-//												"       AND ( a.NAME LIKE ?\r\n" + 
-//												"              OR a.NAME LIKE ? )\r\n" + 
-//												"       AND m.id = a.masterid\r\n" + 
-//												"       AND a.masterid = ?\r\n" + 
-//												"       AND a.taskid = ?\r\n" + 
-//												"ORDER  BY a.status,\r\n" + 
-//												"          a.deadline DESC,\r\n" + 
-//												"          a.created";
-//
-//	private final String alllateRecords_for_task = " SELECT a.*,\r\n" + 
-//													"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
-//													"       m.NAME                          mastername,\r\n" + 
-//													"       t.NAME                          taskname\r\n" + 
-//													"FROM   actions a,\r\n" + 
-//													"       tasks t,\r\n" + 
-//													"       mastertasks m\r\n" + 
-//													"WHERE  a.taskid = t.id\r\n" + 
-//													"       AND t.masterid = a.masterid\r\n" + 
-//													"       AND ( a.NAME LIKE ?\r\n" + 
-//													"              OR a.NAME LIKE ? )\r\n" + 
-//													"       AND m.id = a.masterid\r\n" + 
-//													"       AND a.masterid = ?\r\n" + 
-//													"       AND a.taskid = ?\r\n" + 
-//													"       AND a.deadline <= Sysdate()\r\n" + 
-//													"       AND a.status < 3\r\n" + 
-//													"ORDER  BY a.status,\r\n" + 
-//													"          a.deadline DESC,\r\n" + 
-//													"          a.created  ";
-//
 	private final String allRecordsBetweenDates = " SELECT a.*,\r\n" + 
 													"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
 													"       m.NAME                          mastername,\r\n" + 
@@ -260,25 +165,6 @@ public class biteDao extends GenericDao {
 	}
 	
 	
-//	public dbresult getPlanningTasks (LocalDate pStartDate, LocalDate pEndDate, boolean pOpenOnly) throws SQLException {
-//		
-//		String sql = this.parseSQL(Sources.PLANNING, this.task_planning + this.dates_between +  this.status_range);
-//		
-//		int statusIni, statusFim;
-//		
-//		statusIni = 0;
-//		statusFim = 0;
-//	
-//		if (!pOpenOnly) {
-//			statusIni = 0;
-//			statusFim = 3;
-//		}
-//		
-//		return super.getrecord(sql , java.sql.Date.valueOf(pStartDate) , java.sql.Date.valueOf(pEndDate) , statusIni, statusFim);
-//
-//	}
-//	
-	
 	public dbresult getBites(Sources source, String filter, Object... parametros) throws SQLException {
 		filter = (source == Sources.ACTION) ? filter + type_action : filter + type_planning;
 		String sql = this.parseSQL(getBitesRecords, filter);
@@ -295,15 +181,7 @@ public class biteDao extends GenericDao {
 		super(db);
 	}
 
-	public dbresult getallrecords() throws SQLException {
-		try {
-			return super.getallrecords(allRecords);
-		} catch (SQLException ex) {
-			Logger.getLogger(masterDao.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return null;
-	}
-
+	
 	public dbresult selectrecords(String pLike, String pLike2, LocalDate pDate1, LocalDate pDate2, int pStatusIni, int pStatusFim)
 			throws SQLException {
 		System.out.println("Select record");
@@ -313,28 +191,7 @@ public class biteDao extends GenericDao {
 	}
 
 
-
 	
-	public dbresult selectrecords_for_master(String pLike, String pLike2, int pMasterid) throws SQLException {
-		System.out.println("Select record");
-		return super.getrecord(allRecords_for_master, pLike, pLike2, pMasterid);
-	}
-
-	public dbresult selectlaterecords_for_master(String pLike, String pLike2, int pMasterid) throws SQLException {
-		System.out.println("Select record");
-		return super.getrecord(alllateRecords_for_master, pLike, pLike2, pMasterid);
-	}
-
-	public dbresult selectrecords_for_task(String pLike, String pLike2, int pMasterid, int pTaskid) throws SQLException {
-		System.out.println("Select record");
-		return super.getrecord(allRecords_for_task, pLike, pLike2, pMasterid, pTaskid);
-	}
-
-	public dbresult selectlaterecords_for_task(String pLike, String pLike2, int pMasterid, int pTaskid) throws SQLException {
-		System.out.println("Select record");
-		return super.getrecord(alllateRecords_for_task, pLike, pLike2, pMasterid, pTaskid);
-	}
-
 	public void delete(int pID) throws SQLException {
 		super.delete(DELETE, pID);
 	}
