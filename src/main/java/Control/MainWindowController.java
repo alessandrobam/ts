@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.*;
 
@@ -227,6 +228,7 @@ public class MainWindowController implements Initializable {
 	private TableColumn<bite, String> bite_CDCol;
 	@FXML
 	private TableColumn<bite, String> bite_GoldenCol;
+	
 	@FXML
 	private TableColumn<bite, String> bite_nextCol;
 	
@@ -254,6 +256,9 @@ public class MainWindowController implements Initializable {
 	private TableColumn<bite, String> deliverable_CDCol;
 	@FXML
 	private TableColumn<bite, String> deliverable_GoldenCol;
+
+	@FXML
+	private TableColumn<bite, String> deliverable_nextCol;
 	
 	
 	
@@ -469,7 +474,13 @@ public class MainWindowController implements Initializable {
 	            	
 	            	
 	   } else { if (tbTasks.isFocused()) {
-		            System.out.println("Space task");
+		   if (event.isShortcutDown()) {
+				rescheduleTaskorBite();
+			} else if (event.isShiftDown()) {
+				changeTaskGolden();
+			} else {
+				changeTaskMark();
+			}
 	   }}
 	   
 	   
@@ -791,7 +802,7 @@ public class MainWindowController implements Initializable {
 		apMilestones.setVisible(x);
 
 		if (x) {
-			spPaneMiles.setDividerPosition(0, 0.6);
+			spPaneMiles.setDividerPosition(0, 0.5);
 			focusAndSelect(tbMiles);
 		} else {
 			spPaneMiles.setDividerPosition(0, 1);
@@ -1013,11 +1024,12 @@ public class MainWindowController implements Initializable {
 		ws_finishCol.setCellValueFactory(new PropertyValueFactory<>(WsVariableNames[i++]));
 		ws_totalCol.setCellValueFactory(new PropertyValueFactory<>(WsVariableNames[i++]));
 
-		String[] deliverableVariableNames = {"status", "deadline", "deadline", "name", "countdown", "golden" };
+		String[] deliverableVariableNames = {"status","next" ,"deadline", "deadline", "name", "countdown", "golden" };
 
 		i = 0;
 		
 		deliverable_statusCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
+		deliverable_nextCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
 		deliverable_deadlineCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
 		deliverable_weekdayCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
 		deliverable_nameCol.setCellValueFactory(new PropertyValueFactory<>(deliverableVariableNames[i++]));
@@ -1026,6 +1038,7 @@ public class MainWindowController implements Initializable {
 		deliverable_deadlineCol.setCellFactory(new DayMonthCellFactory());
 		deliverable_weekdayCol.setCellFactory(new WeekDayCellFactory());
 		deliverable_statusCol.setCellFactory(new StatusCellFactory());
+		deliverable_nextCol.setCellFactory(new nextCellFactory());
 		deliverable_GoldenCol.setCellFactory(new goldenCellFactory());
 
 
@@ -1073,6 +1086,9 @@ public class MainWindowController implements Initializable {
 		dbresult dbs = null;
 		ResultSet rs = null;
 		
+		bitesFinish = LocalDate.now();
+		bitesStart = LocalDate.now();
+				
 		LocalDate dateStart = Util.weekStart(LocalDate.now());
 		LocalDate dateEnd = Util.weekEnd(LocalDate.now());
 		
@@ -1236,9 +1252,6 @@ public class MainWindowController implements Initializable {
 		bitesStart = LocalDate.now();
 		bitesFinish = LocalDate.now();
 
-		
-		
-		
 		
 		
 		bringPlanningAndActionBites();
@@ -1909,7 +1922,7 @@ public class MainWindowController implements Initializable {
 			}
 
 			try {
-				System.out.println(event.getCode());
+				//System.out.println(event.getCode());
 				switch (event.getCode()) {
 
 				case ESCAPE:
@@ -1987,13 +2000,13 @@ public class MainWindowController implements Initializable {
 				case DOWN:
 					if (event.isShortcutDown()) {
 						if (event.isShiftDown()) {
-							System.out.println("General Script");
+//							System.out.println("General Script");
 							String currentPath = openDir(true, true);
 							String generalScript = removeLimiteChars(getQuickCopy(6)).replace("{}", currentPath);
 //							System.out.println(generalScript);
 							run(generalScript);
 						} else {
-							System.out.println("General Script");
+//							System.out.println("General Script");
 							String currentPath = openDir(true, true);
 							String generalScript = removeLimiteChars(getQuickCopy(3)).replace("{}", currentPath);
 //							System.out.println(generalScript);
@@ -2054,10 +2067,12 @@ public class MainWindowController implements Initializable {
 						if (tbBites.isFocused()) { biteFilterAll(); } else { 
 						if (tbTasks.isFocused()) { runPythonScriptFileFile(getCurrentFileName(2));
 						}}} 
-							
-							
-							
-						
+					}
+					break;
+
+				case U:
+					if (event.isShortcutDown()) {
+						if (tbTasks.isFocused()) { openURLfromNotes(getCurrentFileName(2));} 
 					}
 					break;
 
@@ -2406,8 +2421,8 @@ public class MainWindowController implements Initializable {
 	}
 
 	private void markasnext() throws SQLException {
-		if (tbBites.isFocused()) {
-			bite currBite = getCurrentBite();
+		if (tbBites.isFocused() || tbMiles.isFocused()) {
+			bite currBite = getSelectedBite();
 			if (currBite.getStatus() != bite.stCLOSED) {
 				if (currBite.getNext() == bite.stNOTNEXT) {
 					currBite.setNext(bite.stNEXT);
@@ -3001,6 +3016,9 @@ public class MainWindowController implements Initializable {
 		cPath = cDao.GetCatPath(getCurrentMaster().getCategory());
 		mPath = file.getPathFromNotes(getCurrentFileName(1));
 		tPath = file.getPathFromNotes(getCurrentFileName(2));
+		
+		
+		
 
 		if (create) {
 			cPath = cPath.isEmpty() ? hPath + dirSeparator + Util.LimpaFileName(getCurrentMaster().getCategory())
@@ -3099,10 +3117,26 @@ public class MainWindowController implements Initializable {
 
 		}
 	}
+	
+	
+	private void openURLfromNotes(String pfileName)  {
+		TextFileHandler file = new TextFileHandler();
+
+		String url;
+		try {
+			url = file.getURLFromNotes(pfileName);
+			if (!url.isEmpty()) {
+				Util.openURL(url);
+		     }
+		} catch (IOException | URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void run(String command) throws IOException {
 
-		System.out.println("Now running --->" + command);
+//		System.out.println("Now running --->" + command);
 
 //		   Process p = Runtime.getRuntime().exec("runas /profile /user:Administrator cmd.exe /c"  + command); 
 
@@ -3121,10 +3155,10 @@ public class MainWindowController implements Initializable {
 //			     InputStreamReader(p.getErrorStream()));
 
 		// read the output from the command
-		System.out.println("Here is the standard output of the command:\n");
+//		System.out.println("Here is the standard output of the command:\n");
 		String s = null;
 //			while ((s = stdInput.readLine()) != null) {
-		System.out.println(s);
+//		System.out.println(s);
 //			}
 
 		// read any errors from the attempted command

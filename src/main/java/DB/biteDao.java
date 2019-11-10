@@ -54,10 +54,10 @@ public class biteDao extends GenericDao {
 			 "       AND t.masterid = a.masterid\r\n" + 
              "       AND m.id = a.masterid\r\n" +
 			"{filter} \r\n" +
-			"ORDER  BY a.status,\r\n" + 
-			"          a.next DESC,\r\n" + 
-			"          a.deadline DESC,\r\n" + 
-			"          a.created  ";
+			"ORDER  BY  a.status, \r\n" + 
+			"			a.next DESC, \r\n" + 
+			"			a.golden DESC,\r\n" + 
+			"			a.created  ";
 
 	
 

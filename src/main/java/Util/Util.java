@@ -10,6 +10,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -22,16 +23,15 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
-//import org.controlsfx.control.action.Action;
-//import org.controlsfx.dialog.Dialogs;
-//import org.controlsfx.control.action.Action;
-//import org.controlsfx.dialog.Dialogs;
-//import org.controlsfx.control.action.Action;
-//import org.controlsfx.dialog.Dialogs;
-
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 
 /**
@@ -46,6 +46,24 @@ public class Util {
         public static final int opINSERT = 1;
         public static final int opUPDATE = 2;
         
+        
+        
+        
+public static void openURL(String url) throws IOException, URISyntaxException {
+	 Desktop d = Desktop.getDesktop();
+	 d.browse(new URI(url));
+}
+public static boolean isValidURL(String urlString)
+{
+	
+	
+	
+	Pattern p = Pattern.compile("^(https?:\\/\\/)?([\\w\\Q$#-_+!*'(),%\\E]+\\.)+(\\w{2,63})(:\\d{1,4})?([\\w\\Q/$-#_+!*'(),%\\E]+\\.?[\\w])*\\/?$");
+    Matcher m;
+    m = p.matcher(urlString);
+    return m.matches();
+	
+}
         
 static public String DateToText(Date pDate, String format) //deprecated
 	{
@@ -150,7 +168,6 @@ public static String CreateDir(String pPath)
 	{
 		boolean success = (new File(pPath)).mkdirs();
 		if (!success) {
-		    System.out.println("directory failed");
 		}
 		return pPath;
 	}
@@ -171,7 +188,7 @@ public static String Read(String pFilename, String pChave) throws IOException{
         FileInputStream fileIn = new FileInputStream( pFilename);
         props.load(fileIn);
         
-        System.out.println(System.getProperty("user.dir"));
+//        System.out.println(System.getProperty("user.dir"));
         return props.getProperty(pChave);
 	}	    
     

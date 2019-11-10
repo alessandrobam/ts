@@ -150,8 +150,8 @@ public class bite extends todoitem {
     		if  (reschedules > 0) {
 	    		totalDays = totalDays +  daysAdded;
 	    		
-	    		String rescheduleStamp = " [" + reschedules  + ", "+ totalDays  +"d]";  
-	        	this.setName(this.getName().substring(0, lo-1) + rescheduleStamp )  ;
+	    		String rescheduleStamp = "[" + reschedules  + ", "+ totalDays  +"d]";  
+	        	this.setName(this.getName().substring(0, lo).trim() + " " + rescheduleStamp )  ;
 	        	this.setLastreschedule(Date.valueOf(LocalDate.now()));
     		}
     }

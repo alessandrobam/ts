@@ -89,7 +89,7 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <VBox layoutX="1.0" prefHeight="391.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <SplitPane fx:id="spPaneMiles" dividerPositions="0.8" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane fx:id="spPaneMiles" dividerPositions="0.5009009009009009" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="180.0">
                            <children>
@@ -116,6 +116,7 @@
                                     <TableColumn fx:id="deliverable_weekdayCol" minWidth="0.0" prefWidth="55.0" text="DoW" />
                                     <TableColumn fx:id="deliverable_nameCol" prefWidth="463.0" text="Deliverable" />
                                     <TableColumn fx:id="deliverable_CDCol" prefWidth="45.0" text="CD" />
+                                    <TableColumn fx:id="deliverable_nextCol" minWidth="7.0" prefWidth="7.0" />
                                  </columns>
                               </TableView>
                            </children>

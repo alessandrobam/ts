@@ -28,6 +28,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
+import java.net.URL;
 
 
 public class TextFileHandler {
@@ -78,8 +79,8 @@ public class TextFileHandler {
         File oldf_dir = oldf.getParentFile();
         File newf_dir = newf.getParentFile();
         
-        System.out.print("Old :" + oldfile);
-        System.out.print("New :" + newfile);
+//        System.out.print("Old :" + oldfile);
+//        System.out.print("New :" + newfile);
         
         //renaming path if necessary
         if (!oldf_dir.getPath().equals(newf_dir.getPath())){
@@ -124,31 +125,54 @@ public class TextFileHandler {
     
 }
   
-  private String pythonOrPath(String command) {
-	if (!command.isEmpty()) {
+  private String stringType(String command) {
+	  if (!command.isEmpty()) {
 	  	if (command.substring(0, 2).toUpperCase().equals("PY")) {
 				return "Python";
 	  	} else
+	  	{ if (Util.isValidURL(command)) {
+	  	    return "URL";
+	  	  } else {
 	  		return "Dir";
-	}else
-		return "None";
+	  	  }	
+	  	}
+	  }
+	  else
+	  {
+		  return "None";
+	  }
   }
 
   public String getPythonScript(String fileName) throws IOException {
-	  
-	  String bracketCommand = getBracketCommandFromFile(fileName, 1); //python commands are expected only on line 1
-	  if (pythonOrPath(bracketCommand).equals("Python")){
-		  return bracketCommand;
-	  }else {
-		  return "";
+	  for (int x = 1; x < 4; x++) { //For loop to eval 3 first lines of the file 
+		  String bracketCommand = getBracketCommandFromFile(fileName, x); 
+		   if (stringType(bracketCommand).equals("Python")){
+			  return bracketCommand;
+		   }
 	  }
+	  return "";
+	  
+  }
+  
+
+  
+  public String getURLFromNotes(String fileName) throws IOException {
+	  for (int x = 1; x < 4; x++) { //For loop to eval 3 first lines of the file 
+		  String bracketCommand = getBracketCommandFromFile(fileName, x); 
+		   if (stringType(bracketCommand).equals("URL")){
+			  return bracketCommand;
+		   }
+	  }
+	  return "";
   }
   
   
+  
+  
 public String getPathFromNotes(String fileName) throws IOException {
-	  for (int x = 1; x < 3; x++) { //For loop to eval 2 first lines of the file 
+	  for (int x = 1; x < 4; x++) { //For loop to eval 2 first lines of the file 
 		  String bracketCommand = getBracketCommandFromFile(fileName, x); 
-		   if (pythonOrPath(bracketCommand).equals("Dir")){
+		   if (stringType(bracketCommand).equals("Dir")){
 			  return bracketCommand;
 		   }
 	  }
