@@ -68,8 +68,8 @@ public class biteDao extends GenericDao {
 	public final static String status_range  = "       AND a.status BETWEEN ? AND ?\r\n" ; 
 	public final static String master_id     = "       AND a.masterid = ?\r\n" ;
 	public final static String task_id       = "       AND a.masterid = ? AND a.taskid = ? \r\n" ;
-	public final static String type_planning = "       AND a.name REGEXP '^(w|d|deliverable)\\\\s\\-'"; 
-	public final static String type_action   = "       AND not (a.name REGEXP '^(w|d|deliverable)\\\\s\\-')";
+	public final static String type_planning = "       AND a.name REGEXP '^(r|w|d|deliverable)\\\\s\\-'"; 
+	public final static String type_action   = "       AND not (a.name REGEXP '^(r|w|d|deliverable)\\\\s\\-')";
 	
 	private final String allRecordsBetweenDates = " SELECT a.*,\r\n" + 
 													"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
