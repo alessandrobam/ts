@@ -57,7 +57,7 @@ public class biteDao extends GenericDao {
 			"ORDER  BY  a.status, \r\n" + 
 			"			a.next DESC, \r\n" + 
 			"			a.golden DESC,\r\n" + 
-			"			a.created  ";
+			"			a.created, countdown  ";
 
 	
 
@@ -69,7 +69,7 @@ public class biteDao extends GenericDao {
 	public final static String master_id     = "       AND a.masterid = ?\r\n" ;
 	public final static String task_id       = "       AND a.masterid = ? AND a.taskid = ? \r\n" ;
 	public final static String type_planning = "       AND a.name REGEXP '^(r|w|d|deliverable)\\\\s\\-'"; 
-	public final static String type_action   = "       AND not (a.name REGEXP '^(r|w|d|deliverable)\\\\s\\-')";
+	public final static String type_action   = "       AND not (a.name REGEXP '^(w|d|deliverable)\\\\s\\-')";
 	
 	private final String allRecordsBetweenDates = " SELECT a.*,\r\n" + 
 													"       Datediff(a.deadline, Sysdate()) countdown,\r\n" + 
@@ -89,7 +89,7 @@ public class biteDao extends GenericDao {
 													"          a.next DESC,\r\n" + 
 													"          a.golden DESC,\r\n" + 
 													"          a.deadline DESC,\r\n" + 
-													"          a.created  ";
+													"          a.created, countdown  ";
 
 	private final String DELETE = " DELETE FROM actions\r\n" + 
 			                      "WHERE  id = ?  ";
