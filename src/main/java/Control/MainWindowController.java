@@ -2823,8 +2823,20 @@ public class MainWindowController implements Initializable {
 				getCurrentMaster().getName(), getCurrentTask().getName(), getCurrentTask().getGolden(), 0);
 
 		if (b.getName() != "") {
-			tbBites.getItems().add(0, b);
-			tbBites.getSelectionModel().select(0);
+			
+			//2019m11_23 - if d - , delivery -, w - is found in the string, tbmiles should receive it instead 
+			
+			if (b.getName().indexOf("d -") == -1 &
+				b.getName().indexOf("deliverable -") == -1 &
+				b.getName().indexOf("w -") == -1 ) {
+				
+				tbBites.getItems().add(0, b);
+				tbBites.getSelectionModel().select(0);
+			} else
+			{
+				tbMiles.getItems().add(0, b);
+				tbMiles.getSelectionModel().select(0);
+			}
 			bDao.persist(b);
 
 			// logStatusChange("BITE CREATION", b.getName());
