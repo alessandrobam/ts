@@ -2072,7 +2072,7 @@ public class MainWindowController implements Initializable {
 
 				case U:
 					if (event.isShortcutDown()) {
-						if (tbTasks.isFocused()) { openURLfromNotes(getCurrentFileName(2));} 
+						if (tbTasks.isFocused() || tbMasterTasks.isFocused()) { openURLfromNotes(getCurrentFileName(3));} 
 					}
 					break;
 

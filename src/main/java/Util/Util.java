@@ -56,13 +56,14 @@ public static void openURL(String url) throws IOException, URISyntaxException {
 public static boolean isValidURL(String urlString)
 {
 	
-	
-	
-	Pattern p = Pattern.compile("^(https?:\\/\\/)?([\\w\\Q$#-_+!*'(),%\\E]+\\.)+(\\w{2,63})(:\\d{1,4})?([\\w\\Q/$-#_+!*'(),%\\E]+\\.?[\\w])*\\/?$");
-    Matcher m;
-    m = p.matcher(urlString);
-    return m.matches();
-	
+    final String regex = "[(.),(\\/)]";
+    final String string = urlString;
+
+    final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+    final Matcher matcher = pattern.matcher(string);
+
+    return matcher.find();
+
 }
         
 static public String DateToText(Date pDate, String format) //deprecated
