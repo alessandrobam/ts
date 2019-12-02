@@ -56,7 +56,7 @@ public static void openURL(String url) throws IOException, URISyntaxException {
 public static boolean isValidURL(String urlString)
 {
 	
-    final String regex = "[(.),(\\/)]";
+    final String regex = "[(\\/)]";
     final String string = urlString;
 
     final Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
