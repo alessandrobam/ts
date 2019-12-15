@@ -28,11 +28,14 @@ import Util.Util;
 import javafx.scene.control.Alert;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.*;
 
 import java.sql.SQLException;
@@ -3060,6 +3063,16 @@ public class MainWindowController implements Initializable {
 			if (!TextFileHandler.DirExists(path)) {
 				Util.CreateDir(path);
 				file.InsertLineAtTop("[" + path + "]", getCurrentFileName(3));
+			} else
+			{
+				Path dfile = new File(path).toPath();
+				
+				if (Files.isRegularFile(dfile)) {
+					path =  dfile.getParent().toString();
+				} else
+				{
+				  System.out.println("Its NOT a file");
+				}
 			}
 		}
 
