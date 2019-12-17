@@ -43,6 +43,7 @@ import java.text.ParseException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -1947,6 +1948,12 @@ public class MainWindowController implements Initializable {
 							getCurrentTodo((TableView) stage.getScene().focusOwnerProperty().get()),
 							event.isShortcutDown());
 					break;
+				case K:
+					if (event.isShortcutDown()) {
+						kickItDownTheRoad(getCurrentTodo((TableView) stage.getScene().focusOwnerProperty().get()));
+					}
+					
+					break;
 				case SPACE:
 				    
 					if (!tbMasterTasks.isFocused()) {
@@ -2445,6 +2452,39 @@ public class MainWindowController implements Initializable {
 
 	}
 
+	
+	private void kickItDownTheRoad (todoitem item) throws SQLException {
+		LocalDate today = LocalDate.now();
+		LocalDate monday = LocalDate.now();
+		LocalDate kickDate = LocalDate.now();
+		
+		monday = today.with(DayOfWeek.MONDAY);
+		
+		int i = 0;
+		
+		int min = 2;
+		int max = 7;
+		
+		int weeks = (int)(Math.random() * ((max - min) + 1)) + min; 
+		int weekday = (int)(Math.random() * ((max - min) + 1)) + min;
+		
+		kickDate = today.plusDays(weekday-2).plusWeeks(weeks);
+		
+		
+		DayOfWeek day = DayOfWeek.of(kickDate.get(ChronoField.DAY_OF_WEEK));
+		
+		switch (day) {
+           case SATURDAY:
+             System.out.println("Weekend - Saturday");
+             kickDate = kickDate.with(DayOfWeek.MONDAY);
+           case SUNDAY:
+        	  kickDate = kickDate.with(DayOfWeek.MONDAY);
+        }
+		
+		setDeadline(item, kickDate);
+		
+	}
+	
 	private void quickReschedule(KeyCode keycode, todoitem item, boolean fromCurrentDate) throws SQLException {
 
 		LocalDate currentDate = getDeadline(item).toLocalDate();
