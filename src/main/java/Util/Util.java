@@ -27,11 +27,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 
 
 /**
@@ -93,23 +98,38 @@ static public boolean onWindows()
             }
             return false;
 }
+
+
 public static void AlertMessagebox(String msg) {
+	AlertMessagebox (msg, "");
+}
+
+public static void AlertMessagebox(String msg, String details) {
       
-	//Rewrite afterwards
 	
-	   //Action response = Dialogs.create()
-      //.title(msg)                                      dialogs
-      //.masthead(msg)
-      //.message( msg)
-      //.showConfirm();
+	Alert alert = new Alert(AlertType.INFORMATION);
+	alert.setTitle("Info");
+	alert.setHeaderText(msg);
+	alert.setContentText(details);
+	alert.showAndWait().ifPresent(rs -> {
+	    if (rs == ButtonType.OK) {
+	        System.out.println("Pressed OK.");
+	    }
+	});
 }
 
 public static void OpenDir(String pPath) throws IOException {
 		
-                File file = new File (pPath);
-		Desktop desktop = Desktop.getDesktop();
-		desktop.open(file);
-                
+        File file = new File (pPath);
+        
+        Path path = Paths.get(pPath);
+	    if (Files.exists(path)) {
+	    	Desktop desktop = Desktop.getDesktop();
+			desktop.open(file);	
+	    } else
+	    {
+	    	Util.AlertMessagebox("File or Directory does not exist", pPath);
+	    }
 	}
     
 
@@ -167,10 +187,25 @@ public static String InputText    (String title, String head, String msg, String
 
 public static String CreateDir(String pPath)
 	{
-		boolean success = (new File(pPath)).mkdirs();
-		if (!success) {
-		}
-		return pPath;
+	    Path path = Paths.get(pPath);
+	    boolean isDir = Files.isDirectory(path);
+	    boolean success = true;
+	    
+	    if (!isDir) {
+	    //Creating the path if NOT under a BOX directory tree
+			if (pPath.toUpperCase().contains("BOX")) {
+				AlertMessagebox("Can't create a directory on a BOX directory tree", pPath);
+				success = false;
+			} else { if (pPath.contains(".")) {
+				AlertMessagebox("Files cannot be created with this option, only directories", pPath);
+				success = false;
+			}
+			else {
+				success = (new File(pPath)).mkdirs();	
+			}    	
+	    }
+	    }
+	   return success ? pPath : ""; 
 	}
 	
 public static void CreateTextFile(String pDir, String pFileName)
