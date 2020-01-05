@@ -1332,10 +1332,14 @@ public class MainWindowController implements Initializable {
 			case 1:
 				TID = "Master";
 				fName = getCurrentMaster().getName();
+				fName = Util.LimpaFileName(fName);
+				fName = TextFileHandler.GetNotesFile(getCurrentMaster().getName(), fName, TID, true);
 				break;
 			case 2:
 				TID = String.valueOf(getCurrentTask().getId());
 				fName = getCurrentTask().getName();
+				fName = Util.LimpaFileName(fName);
+				fName = TextFileHandler.GetNotesFile(getCurrentTask().getMasterName(), fName, TID, true);
 				break;
 			case 3:
 				if (tbMasterTasks.isFocused()) {
@@ -1345,11 +1349,15 @@ public class MainWindowController implements Initializable {
 					TID = String.valueOf(getCurrentTask().getId());
 					fName = getCurrentTask().getName();
 				}
+				fName = Util.LimpaFileName(fName);
+				fName = TextFileHandler.GetNotesFile(getCurrentTask().getMasterName(), fName, TID, true);
 				break;
 			}
-			fName = Util.LimpaFileName(fName);
-			return TextFileHandler.GetNotesFile(getCurrentTask().getMasterName(), fName, TID, true);
+			
+			return fName;
+			
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			return "";
 		}
 	}
@@ -1903,7 +1911,7 @@ public class MainWindowController implements Initializable {
 					if (event.isShortcutDown()) {
 						if (tbBites.isFocused()) {
 							locateBiteParent((bite) tbBites.getSelectionModel().getSelectedItem(), true);
-							logStatusChange("", "[ " + getCurrentBite().getName() + " ]");
+							Util.logStatusChange("", "[ " + getCurrentBite().getName() + " ]", getCurrentFileName(2) );
 							openNota(getCurrentFileName(2));
 						} else {
 
@@ -2222,7 +2230,7 @@ public class MainWindowController implements Initializable {
 //										changeBiteStatus();
 									} else {
 										if (scChangeTaskStatus.match(event)) {
-											logStatusChange("", "[ " + getCurrentBite().getName() + " ]");
+											Util.logStatusChange("", "[ " + getCurrentBite().getName() + " ]", getCurrentFileName(2));
 											if (getCurrentTask().getStatus() != task.stWORKING) {
 												tbTasks.requestFocus();
 												changeTaskStatus(false, event.isShiftDown()); // se
@@ -3216,28 +3224,7 @@ public class MainWindowController implements Initializable {
 		}
 	}
 
-	public void logStatusChange(String status, String message) {
 
-		// 2014m10 - Alessandro - Decidi que não atualizar o status as notas
-		// ficam bem mais clean.
-
-		status = status.length() > 0 ? " - [" + status + "] - " : " - ";
-
-		TextFileHandler file = new TextFileHandler();
-		java.util.Date a = new java.util.Date();
-
-		String statusMessage;
-
-		if (!message.isEmpty() && message != null) {
-			statusMessage = status + message;
-		} else {
-			statusMessage = status;
-		}
-
-//		file.InsertLine("\n" + Util.DateToText(a, "HH:mm dd/MM/yyyy - u") + statusMessage, getCurrentFileName(2));
-		file.InsertLine("\n" + Util.DateToText(a, "dd MMM yyyy - EEE - HH:mm") + statusMessage, getCurrentFileName(2));
-
-	}
 
 	public void logTimeStamp() {
 		TextFileHandler file = new TextFileHandler();

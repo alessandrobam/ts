@@ -74,7 +74,7 @@ public class NewBiteController implements Initializable {
         parent.tbBites.getItems().add(0, b);
         parent.tbBites.getSelectionModel().select(0);
         parent.bDao.persist(b);
-        parent.logStatusChange("BITE CREATION", b.getName());
+        Util.logStatusChange("BITE CREATION", b.getName(),parent.getCurrentFileName(2));
         
         Stage stage = (Stage) btCancel.getScene().getWindow();
         stage.hide();    

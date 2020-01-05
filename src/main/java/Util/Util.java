@@ -185,6 +185,29 @@ public static String InputText    (String title, String head, String msg, String
 }
 
 
+public static void logStatusChange(String status, String message, String filename) {
+
+	// 2014m10 - Alessandro - Decidi que não atualizar o status as notas
+	// ficam bem mais clean.
+
+	status = status.length() > 0 ? " - [" + status + "] - " : " - ";
+
+	TextFileHandler file = new TextFileHandler();
+	java.util.Date a = new java.util.Date();
+
+	String statusMessage;
+
+	if (!message.isEmpty() && message != null) {
+		statusMessage = status + message;
+	} else {
+		statusMessage = status;
+	}
+
+//	file.InsertLine("\n" + Util.DateToText(a, "HH:mm dd/MM/yyyy - u") + statusMessage, getCurrentFileName(2));
+	file.InsertLine("\n" + Util.DateToText(a, "dd MMM yyyy - EEE - HH:mm") + statusMessage, filename);
+
+}
+
 public static String CreateDir(String pPath)
 	{
 	    Path path = Paths.get(pPath);

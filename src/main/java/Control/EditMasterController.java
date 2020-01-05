@@ -85,6 +85,11 @@ public class EditMasterController implements Initializable {
      String newfilename = TextFileHandler.GetNotesFile(m.getName(), m.getName(), "Master",false);
      TextFileHandler.renameFile (oldfilename, newfilename  );
      
+     TextFileHandler.renameFile (oldfilename, newfilename  );
+     Util.logStatusChange("CREATED", "Master Task Creation", newfilename );
+     
+     
+     
      Stage stage = (Stage) btOK.getScene().getWindow();
      stage.close();    
     }

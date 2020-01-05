@@ -124,7 +124,11 @@ public class EditTaskController implements Initializable {
      
      String newfilename = TextFileHandler.GetNotesFile(m.getName(), t.getName(), String.valueOf(t.getId()),false);
      
+     System.out.println(newfilename);
+     
      TextFileHandler.renameFile (oldfilename, newfilename  );
+     Util.logStatusChange("CREATED", "Task Creation", newfilename );
+     
      
      parent.refreshMaster();
      parent.selectTaskById(t.getId());
