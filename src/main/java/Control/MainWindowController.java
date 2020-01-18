@@ -125,11 +125,31 @@ public class MainWindowController implements Initializable {
 
 	// 2014m11 - vCurrWeekPartialOn diz se o filtro de semana parcial esta ativo
 	private boolean vCurrWeekPartialOn = false;
+	
+	// 2020m01 - vCurrMilestoneFilter diz qual filtro esta ativo. 
+	private int vCurrMilestoneFilterLevel = 0;
 
 	// 2014m11 - Quando iniciar uma tarefa, todas as outras tarefas rodando vão
 	// ser colocadas em Wait
 	ArrayList<master> runningMaster = new ArrayList<master>();
 	ArrayList<task> runningTask = new ArrayList<task>();
+	
+	// 2020m01 - Saving database query results to allow for in screen filtering
+	
+	ObservableList<bite> tvBiteData, tvMilestoneData, tvObservable ;
+	ObservableList<worksession> tvWorkSessionData; 
+	ObservableList<master> tvMasterData;
+	ObservableList<task> tvTaskData;
+	
+	ObservableList<bite> tvBiteData_tb_items; //observable list dedicate to loading table items.
+	ObservableList<bite> tvMilesData_tb_items; //observable list dedicate to loading table items.
+	
+	
+	
+	
+	
+	
+	
 
 	public boolean deleting = false;
 	final SimpleBooleanProperty doFocus = new SimpleBooleanProperty(false);
@@ -339,23 +359,6 @@ public class MainWindowController implements Initializable {
 
 		stage.show();
 	}
-
-//	private void updateStatusBar() {
-//
-//		if (tbBites.isFocused() && getCurrentBite() != null) {
-//			textStatus.setText(getCurrentBite().getMastername() + " | " + getCurrentBite().getTaskname() + " | "
-//					+ getCurrentBite().getName());
-//		} else {
-//			if (tbTasks.isFocused() && getCurrentTask() != null) {
-//				if (getCurrentMaster().getId() < 0) {
-//					textStatus.setText(getCurrentTask().getMasterName() + " | " + getCurrentTask().getName());
-//				}
-//			} else {
-//				textStatus.setText("");
-//			}
-//
-//		}
-//	}
 
 	private void updateStatusBar() {
 
@@ -584,6 +587,10 @@ public class MainWindowController implements Initializable {
 		showBites(biteDao.FilterModifier.ALL, detectSource(), "");
 	}
 
+	private void biteFilterAllClosedOrOpen(biteDao.FilterModifier modifier) throws IOException, SQLException {
+		showBites(modifier, detectSource(), "");
+	}
+	
 	@FXML
 	private void testbutton(ActionEvent event) throws IOException, SQLException {
 		tabPane.getSelectionModel().selectNext();
@@ -1026,7 +1033,7 @@ public class MainWindowController implements Initializable {
 	//
 	// }
 	public void getWorkSessionData(int masterid, int taskid) throws SQLException {
-		ObservableList<worksession> tvWorkSessionData = FXCollections.observableArrayList();
+		tvWorkSessionData = FXCollections.observableArrayList();
 		long totalminutes = 0;
 		ResultSet rs;
 		rs = rDao.getTASKSESSIONS(masterid, taskid);
@@ -1041,10 +1048,11 @@ public class MainWindowController implements Initializable {
 	}
 
 	private void bringPlanningAndActionBites() throws SQLException {
-		ObservableList<bite> tvBiteData = FXCollections.observableArrayList();
+		
+//		tvBiteData = FXCollections.observableArrayList();
 		bDao = new biteDao(this.conn);
-		dbresult dbs = null;
-		ResultSet rs = null;
+//		dbresult dbs = null;
+//		ResultSet rs = null;
 
 		bitesFinish = LocalDate.now();
 		bitesStart = LocalDate.now();
@@ -1054,38 +1062,27 @@ public class MainWindowController implements Initializable {
 
 		showBites(biteDao.FilterModifier.ALL, biteDao.Sources.PLANNING, biteDao.dates_between, Util.sqlDate(dateStart),
 				Util.sqlDate(dateEnd));
+		
 		showBites(biteDao.FilterModifier.ALL, biteDao.Sources.ACTION, biteDao.dates_between,
 				Util.sqlDate(LocalDate.now()), Util.sqlDate(LocalDate.now()));
 
 	}
 
-	private void populateTable(dbresult dbs, Sources source, boolean claimfocus) throws SQLException {
+	private void populateTable(Sources source, boolean claimfocus) throws SQLException {
 
-		ObservableList<bite> tvObservable = FXCollections.observableArrayList();
+//		tvObservable = FXCollections.observableArrayList();
 
-		TableView tbTable = source == Sources.ACTION ? tbBites : tbMiles;
+		
 
-		if (dbs.getRs() != null) {
-			while (dbs.getRs().next()) {
-				tvObservable.addAll(createBite(dbs.getRs()));
-			}
+//			if (claimfocus) {
+//				focusAndSelect(tbBites);
+//
+//				if (tbTable.getSelectionModel().getFocusedIndex() < 0) {
+//					tbTable.getSelectionModel().select(0);
+//				}
+//			}
 
-			dbs.getRs().close();
-			dbs.getStm().close();
-
-			tbTable.setItems(tvObservable);
-			// BiteListed.setText(String.valueOf(tvBiteData.size()));
-
-			if (claimfocus) {
-				focusAndSelect(tbBites);
-
-				if (tbTable.getSelectionModel().getFocusedIndex() < 0) {
-					tbTable.getSelectionModel().select(0);
-				}
-			}
-
-			focusAndSelect(tbTable);
-		}
+//			focusAndSelect(tbTable);
 	}
 
 	private Object[] getNewPar(Object[] parametros, Object... newParameters) {
@@ -1116,6 +1113,12 @@ public class MainWindowController implements Initializable {
 		case LATE:
 			filter = filter + biteDao.dates_late;
 			break;
+		
+		case CLOSED:
+			filter = filter + biteDao.status_range;
+			parametros = getNewPar(parametros, 3, 3);
+			break;
+			
 		case OPEN:
 			filter = filter + biteDao.status_range;
 			parametros = getNewPar(parametros, 1, 2);
@@ -1124,9 +1127,44 @@ public class MainWindowController implements Initializable {
 
 		dbresult dbs = null;
 		dbs = bDao.getBites(source, filter, parametros);
+		
+		
+		int a = 0;
+		
+		tvObservable.clear();
+		if (dbs.getRs() != null) {
+			while (dbs.getRs().next()) {
+				tvObservable.add(createBite(dbs.getRs()));
+				a = a +1;
+			}
+		}
+		
+		System.out.println("Records loaaded " + a );
+		
+		dbs.getRs().close();
+ 		dbs.getStm().close();
+		
+ 		
+ 		if (source == biteDao.Sources.PLANNING ) {
+ 			tvMilestoneData.clear();
+			tvMilestoneData.addAll(tvObservable);
+			tbMiles.setItems(tvMilestoneData);
 
-		populateTable(dbs, source, false);
+			tvMilesData_tb_items.clear();
+			tvMilesData_tb_items.addAll(tvObservable);
 
+			
+			focusAndSelect(tbMiles);
+		} else {
+			tvBiteData.clear();
+			tvBiteData.addAll(tvObservable);
+			
+			tvBiteData_tb_items.clear();
+			tvBiteData_tb_items.addAll(tvObservable);
+			
+			tbBites.setItems(tvBiteData);
+			focusAndSelect(tbBites);
+		}
 		return dbs;
 	}
 
@@ -1169,8 +1207,13 @@ public class MainWindowController implements Initializable {
 		dbresult dbs = mDao.getallrecords();
 		rs = mDao.getallrecords().getRs();
 
-		ObservableList<master> tvMasterData = FXCollections.observableArrayList();
-		ObservableList<task> tvTaskData = FXCollections.observableArrayList();
+		tvMasterData = FXCollections.observableArrayList();
+		tvTaskData = FXCollections.observableArrayList();
+		tvBiteData = FXCollections.observableArrayList();
+		tvMilestoneData = FXCollections.observableArrayList();
+		tvObservable= FXCollections.observableArrayList();
+		tvMilesData_tb_items= FXCollections.observableArrayList();
+		tvBiteData_tb_items= FXCollections.observableArrayList();
 
 		// carregando Masters
 		master m;
@@ -1184,7 +1227,6 @@ public class MainWindowController implements Initializable {
 
 		tvMasterData.add(new master(-1, "All Overdue Tasks", null));
 		tvMasterData.add(new master(-2, "All Tasks with no next action", null));
-
 		tbMasterTasks.setItems(tvMasterData);
 		rs.close();
 
@@ -1219,7 +1261,7 @@ public class MainWindowController implements Initializable {
 
 		ResultSet rs;
 
-		ObservableList<task> tvTaskData = FXCollections.observableArrayList();
+		tvTaskData = FXCollections.observableArrayList();
 
 		dbresult dbs = tDao.getTasks_by_Master(masterid);
 		rs = dbs.getRs();
@@ -2037,13 +2079,19 @@ public class MainWindowController implements Initializable {
 					break;
 
 				case A:
+					
+					biteDao.FilterModifier modifier;
+					modifier = biteDao.FilterModifier.ALL;
+					
 					if (event.isShortcutDown()) {
-
+						if (event.isShiftDown()) {
+							modifier = biteDao.FilterModifier.CLOSED;
+						}
 						if (tbMiles.isFocused()) {
-							biteFilterAll();
+							biteFilterAllClosedOrOpen(modifier);
 						} else {
 							if (tbBites.isFocused()) {
-								biteFilterAll();
+								biteFilterAllClosedOrOpen(modifier);
 							} else {
 								if (tbTasks.isFocused()) {
 									runPythonScriptFileFile(getCurrentFileName(2));
@@ -2059,6 +2107,68 @@ public class MainWindowController implements Initializable {
 							openURLfromNotes(getCurrentFileName(3));
 						}
 					}
+					break;
+				case D:
+					
+					
+					
+					if (tbMiles.isFocused() && event.isShiftDown()) {
+
+						String[] filter_options = {"","deliverable - ", "r - ", "d - "};
+
+
+						
+						tvMilesData_tb_items.clear();
+						
+						ObservableList<TableColumn<bite, ?>> cols = tbMiles.getColumns();
+						
+						TableColumn col = cols.get(4);
+						
+						vCurrMilestoneFilterLevel = vCurrMilestoneFilterLevel + 1;
+						
+						if (vCurrMilestoneFilterLevel > filter_options.length-1) {
+							vCurrMilestoneFilterLevel = 0;
+						}
+						
+						
+						 String search_term = filter_options[vCurrMilestoneFilterLevel];
+						 System.out.println(search_term);
+						 
+ 						 for(int i=0; i< tvMilestoneData.size(); i++) {
+ 							String cellValue = col.getCellData(tvMilestoneData.get(i)).toString().toLowerCase();
+ 							if (cellValue.startsWith(search_term)) {
+ 								tvMilesData_tb_items.add(tvMilestoneData.get(i));
+ 							}
+ 							tbMiles.setItems(tvMilesData_tb_items);
+ 							
+						 }
+//						 System.out.println("D pressed on the deliverable panel");
+						  
+ 						focusAndSelect(tbMiles); 
+						  
+						  
+						  
+						  
+ 						event.consume();
+							
+					}
+					break;
+					
+				case X:
+					if (tbMiles.isFocused() && event.isShiftDown() ) {
+
+						
+						
+						tvMilesData_tb_items.clear();
+						tvMilesData_tb_items.addAll(tvMilestoneData);
+							tbMiles.setItems(tvMilesData_tb_items);
+						
+						vCurrMilestoneFilterLevel = 0;
+						  
+						tbMiles.setItems(tvMilesData_tb_items);
+ 						event.consume();
+							
+						}
 					break;
 
 				case W:
@@ -2167,18 +2277,6 @@ public class MainWindowController implements Initializable {
 					}
 					event.consume();
 					break;
-//				case RIGHT:
-//					if (event.isShiftDown() && event.isAltDown()) {
-//						biteFilter(false, BITE_FILTER_OPTION.TASK_SPECIFIC_LATE, tbBites);
-//
-//					} else {
-//						if (event.isShortcutDown()) {
-//							biteFilter(event.isShiftDown(), BITE_FILTER_OPTION.TASK_SPECIFIC, tbBites);
-//
-//						}
-//					}
-//					event.consume();
-//					break;
 				case J:
 					if (event.isShortcutDown()) {
 						openDir(event.isShiftDown());
@@ -2271,6 +2369,7 @@ public class MainWindowController implements Initializable {
 					break;
 				case DELETE:
 					deleteMaster();
+			
 					break;
 				case RIGHT:
 					if (event.isShiftDown() && event.isAltDown()) // isShorcutDown
@@ -2678,8 +2777,8 @@ public class MainWindowController implements Initializable {
 	private void changeTask() throws IOException, SQLException {
 		task t = getCurrentTask();
 
-		// 2014m12 - Se for uma edição em pseudo task, localizar a tarefa de
-		// verdade
+		// 2014m12 - Se for uma edição em pseudo task, localizar a tarefa de verdade
+
 		if (getCurrentMaster().getId() > 0) {
 			editTask(t, Util.opUPDATE);
 		} else {
@@ -2846,21 +2945,6 @@ public class MainWindowController implements Initializable {
 		}
 	}
 
-//	private void addMilestone() throws IOException, SQLException, ParseException {
-//
-//		milestones b = new milestones(miDao.getnextid(), getCurrentTask().getMasterid(), getCurrentTask().getId(),
-//				Util.InputText("New milestone", "What's the next milestone you hope to achieve?", "Milestone:",
-//						getCurrentTask().getName()),
-//				Util.DateToSQLDate(new java.util.Date()), null, task.stOPEN, 0);
-//
-//		if (b.getName() != "") {
-//			tbMiles.getItems().add(0, b);
-//			tbMiles.getSelectionModel().select(0);
-//			miDao.persist(b);
-//			focusAndSelect(tbMiles);
-//			// logStatusChange("MILESTONE CREATED", b.getName());
-//		}
-//	}
 
 	public void selectTaskById(int id) {
 		task t = null;

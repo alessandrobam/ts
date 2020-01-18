@@ -35,6 +35,7 @@ public class biteDao extends GenericDao {
 	   	  ALL, 
 	      LATE,
 		  OPEN,
+		  CLOSED,
 		  OPEN_AND_LATE
 		  
 		}
@@ -161,6 +162,7 @@ public class biteDao extends GenericDao {
 		
 		sql = sql_template.replace("{filter}", filter); //
 	    
+//		System.out.println(sql);
 		return sql;
 	}
 	
