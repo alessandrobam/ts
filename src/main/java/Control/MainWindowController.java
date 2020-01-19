@@ -595,7 +595,6 @@ public class MainWindowController implements Initializable {
 	private void testbutton(ActionEvent event) throws IOException, SQLException {
 		tabPane.getSelectionModel().selectNext();
 		focusAndSelect(tbWs);
-		focusAndSelect(tbWs);
 	}
 
 	public String findAndSelectProjectByID(int y, boolean select) {
@@ -1104,6 +1103,8 @@ public class MainWindowController implements Initializable {
 	private dbresult showBites(biteDao.FilterModifier modifier, biteDao.Sources source, String filter,
 			Object... parametros) throws SQLException {
 
+		vCurrMilestoneFilterLevel = 0;
+		
 		biteDao.FilterModifier[] modifiers = biteDao.FilterModifier.values();
 
 		switch (modifier) {
@@ -1113,7 +1114,7 @@ public class MainWindowController implements Initializable {
 		case LATE:
 			filter = filter + biteDao.dates_late;
 			break;
-		
+			
 		case CLOSED:
 			filter = filter + biteDao.status_range;
 			parametros = getNewPar(parametros, 3, 3);
@@ -2112,7 +2113,7 @@ public class MainWindowController implements Initializable {
 					
 					
 					
-					if (tbMiles.isFocused() && event.isShiftDown()) {
+					if (tbMiles.isFocused() && event.isShortcutDown()) {
 
 						String[] filter_options = {"","deliverable - ", "r - ", "d - "};
 
@@ -2155,7 +2156,7 @@ public class MainWindowController implements Initializable {
 					break;
 					
 				case X:
-					if (tbMiles.isFocused() && event.isShiftDown() ) {
+					if (tbMiles.isFocused() && event.isShortcutDown() ) {
 
 						
 						
@@ -2168,6 +2169,7 @@ public class MainWindowController implements Initializable {
 						tbMiles.setItems(tvMilesData_tb_items);
  						event.consume();
 							
+ 						focusAndSelect(tbMiles); 
 						}
 					break;
 
