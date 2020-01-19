@@ -2110,48 +2110,59 @@ public class MainWindowController implements Initializable {
 					}
 					break;
 				case D:
-					
-					
-					
+					//2020m01_18 - New Feature to filter deliverable panel
+					String[] filter_options = {"","deliverable - ", "r - ", "d - ", "w - "};
 					if (tbMiles.isFocused() && event.isShortcutDown()) {
-
-						String[] filter_options = {"","deliverable - ", "r - ", "d - "};
-
-
-						
 						tvMilesData_tb_items.clear();
-						
 						ObservableList<TableColumn<bite, ?>> cols = tbMiles.getColumns();
-						
 						TableColumn col = cols.get(4);
-						
 						vCurrMilestoneFilterLevel = vCurrMilestoneFilterLevel + 1;
-						
 						if (vCurrMilestoneFilterLevel > filter_options.length-1) {
 							vCurrMilestoneFilterLevel = 0;
 						}
-						
-						
 						 String search_term = filter_options[vCurrMilestoneFilterLevel];
 						 System.out.println(search_term);
-						 
- 						 for(int i=0; i< tvMilestoneData.size(); i++) {
+
+						 for(int i=0; i< tvMilestoneData.size(); i++) {
  							String cellValue = col.getCellData(tvMilestoneData.get(i)).toString().toLowerCase();
  							if (cellValue.startsWith(search_term)) {
  								tvMilesData_tb_items.add(tvMilestoneData.get(i));
  							}
  							tbMiles.setItems(tvMilesData_tb_items);
- 							
-						 }
-//						 System.out.println("D pressed on the deliverable panel");
-						  
+ 						 }
  						focusAndSelect(tbMiles); 
-						  
-						  
-						  
-						  
  						event.consume();
+					} else { 
+						//This feature will toggle a task into a different type of deliverable 
+						if (tbMiles.isFocused() && event.isShiftDown()) {
+							todoitem item;
+							item = getCurrentTodo((TableView) stage.getScene().focusOwnerProperty().get());
+							String newName = "";
+							int type_detected = 0;
+							for(int i = 1; i < filter_options.length; i++) {
+								if (item.getName().startsWith(filter_options[i]) ) {
+									type_detected = i;
+								}
+							}
+
 							
+							int new_type = type_detected + 1; 
+							if (new_type > filter_options.length-1) {
+								new_type = 0;
+							}
+							
+							if (type_detected == 0 ) {
+								newName = filter_options[new_type] + item.getName();
+							} else
+							{
+							   newName = item.getName().replace(filter_options[type_detected],filter_options[new_type]);
+							}
+							
+							item.setName(newName);
+							System.out.println(item.getName());
+							bDao.persist((bite) item);
+							event.consume();
+						}
 					}
 					break;
 					
