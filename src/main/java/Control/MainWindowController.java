@@ -2111,7 +2111,7 @@ public class MainWindowController implements Initializable {
 					break;
 				case D:
 					//2020m01_18 - New Feature to filter deliverable panel
-					String[] filter_options = {"","deliverable - ", "r - ", "d - ", "w - "};
+					String[] filter_options = {"","deliverable - ", "d - ", "r - ", "w - "};
 					if (tbMiles.isFocused() && event.isShortcutDown()) {
 						tvMilesData_tb_items.clear();
 						ObservableList<TableColumn<bite, ?>> cols = tbMiles.getColumns();
@@ -2137,10 +2137,10 @@ public class MainWindowController implements Initializable {
 						if (tbMiles.isFocused() && event.isShiftDown()) {
 							todoitem item;
 							item = getCurrentTodo((TableView) stage.getScene().focusOwnerProperty().get());
-							String newName = "";
+							String newName = item.getName();
 							int type_detected = 0;
 							for(int i = 1; i < filter_options.length; i++) {
-								if (item.getName().startsWith(filter_options[i]) ) {
+								if (item.getName().toLowerCase().startsWith(filter_options[i]) ) {
 									type_detected = i;
 								}
 							}
@@ -2151,12 +2151,13 @@ public class MainWindowController implements Initializable {
 								new_type = 0;
 							}
 							
-							if (type_detected == 0 ) {
-								newName = filter_options[new_type] + item.getName();
-							} else
-							{
-							   newName = item.getName().replace(filter_options[type_detected],filter_options[new_type]);
+							
+							if (type_detected != 0 ) {
+							   newName = item.getName().substring(filter_options[type_detected].length());
 							}
+							
+							newName = filter_options[new_type] + newName;
+							
 							
 							item.setName(newName);
 							System.out.println(item.getName());
