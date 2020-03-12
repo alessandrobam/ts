@@ -122,6 +122,10 @@ public class MainWindowController implements Initializable {
 
 	private int goToRunningSearchStart = 0;
 	private long lastBitePrioritization;
+	
+	private long lastLevelJump;
+	private int currentLevel;
+	
 
 	// 2014m11 - vCurrWeekPartialOn diz se o filtro de semana parcial esta ativo
 	private boolean vCurrWeekPartialOn = false;
@@ -1911,14 +1915,18 @@ public class MainWindowController implements Initializable {
 			TableView tbTable;
 			tbTable = tbBites;
 
+			
 			if (event.getCode() != KeyCode.K) {
 				milestoneFilterCurrentLevel = 0;
 			}
 
 			try {
-				// System.out.println(event.getCode());
+				 System.out.println(event.getCode());	
 				switch (event.getCode()) {
 
+				case BACK_QUOTE:
+					gotoQuickAccessTask2();
+					break;
 				case ESCAPE:
 					gotoQuickAccessTask();
 					break;
@@ -2530,13 +2538,22 @@ public class MainWindowController implements Initializable {
 	}
 
 	private void gotoQuickAccessTask() throws IOException {
-		TextFileHandler handler = new TextFileHandler();
-		String rowStr = handler.getRowFromFile(DashboardFile, 4);
-		findAndSelectProjectByID(Integer.valueOf(rowStr), true);
-		tbTasks.requestFocus();
-
+		
+		   TextFileHandler handler = new TextFileHandler();
+    		String rowStr = handler.getRowFromFile(DashboardFile, 4);
+    		findAndSelectProjectByID(Integer.valueOf(rowStr), true);
+    		tbTasks.requestFocus();
 	}
 
+	private void gotoQuickAccessTask2() throws IOException {
+		
+		   TextFileHandler handler = new TextFileHandler();
+ 		String rowStr = handler.getRowFromFile(DashboardFile, 7);
+ 		findAndSelectProjectByID(Integer.valueOf(rowStr), true);
+ 		tbTasks.requestFocus();
+	}
+
+	
 	private void kickItDownTheRoad(todoitem item) throws SQLException {
 		LocalDate today = LocalDate.now();
 		LocalDate monday = LocalDate.now();
