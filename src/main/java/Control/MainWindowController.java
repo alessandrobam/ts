@@ -1925,6 +1925,7 @@ public class MainWindowController implements Initializable {
 				switch (event.getCode()) {
 
 				case BACK_QUOTE:
+				case DEAD_GRAVE:
 					gotoQuickAccessTask2();
 					break;
 				case ESCAPE:
