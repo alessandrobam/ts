@@ -19,6 +19,8 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 /**
  *
@@ -54,7 +56,10 @@ public class task extends todoitem {
     private final IntegerProperty golden = new SimpleIntegerProperty();
     
     private final StringProperty rolename  = new SimpleStringProperty();
-    private final IntegerProperty roleid = new SimpleIntegerProperty();    
+    private final IntegerProperty roleid = new SimpleIntegerProperty();
+   
+    private final IntegerProperty archived = new  SimpleIntegerProperty();    
+    
     
     
     public String getRoleName() {
@@ -257,6 +262,7 @@ public class task extends todoitem {
         reference.set(value);
     }
 
+    
     public StringProperty referenceProperty() {
         return reference;
     }
@@ -300,13 +306,27 @@ public class task extends todoitem {
         return created;
     }
 
+    
+    public int getArchived() {
+        return archived.get();
+    }
+
+    public void setArchived(int value) {
+        archived.set(value);
+    }
+
+    public IntegerProperty archivedProperty() {
+        return archived;
+    }
+    
+    
      public task(int masterid, int id, String name, Timestamp created) {
         this.masterid = masterid;
         this.setId(id);
         this.setName(name);
         this.setCreated(created);
      }
-    public task(int masterid, int id, String name, String tag, Date deadline, int too, Timestamp start, Timestamp restart, Timestamp finish, Timestamp wait, int status, long minutes, String reference, Timestamp changedon, Timestamp created, int pinned, int marked, int golden, String mastername, String rolename, int roleid) {
+    public task(int masterid, int id, String name, String tag, Date deadline, int too, Timestamp start, Timestamp restart, Timestamp finish, Timestamp wait, int status, long minutes, String reference, Timestamp changedon, Timestamp created, int pinned, int marked, int golden, String mastername, String rolename, int roleid, int archived) {
         this.masterid = masterid;
         this.setId(id);
         this.setName(name);
@@ -329,6 +349,7 @@ public class task extends todoitem {
         this.setMasterName(mastername);
         this.setRoleName(rolename);
         this.setRoleid(roleid);
+        this.setArchived(archived);
     }
 
     public long calcMinutesWithoutWaits() throws ParseException

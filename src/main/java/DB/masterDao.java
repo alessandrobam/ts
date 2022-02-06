@@ -19,15 +19,16 @@ import Model.master;
 public class masterDao extends GenericDao {
 
 //    private final String ALL = "SELECT * FROM mastertasks_v";
-    private final String ALL = "SELECT * FROM mastertasks_v";
-    private final String REFRESH = "SELECT * FROM mastertasks_v where id=?";
+    private final String ALL = "SELECT * FROM mastertasks_v where archived <= ? ";
+    private final String REFRESH = "SELECT * FROM mastertasks_v where id=? and archived <= ?";
     
     //oracle private final String NEXT_ID = "SELECT COALESCE (MAX (ID),0)+1 id FROM MASTERTASKS";
     private final String NEXT_ID = "SELECT COALESCE (MAX(ID),0)+1 id FROM MASTERTASKS";
     
-    private final String INSERT = "insert into mastertasks (id, name, reference, category, workcount, waitcount, donecount, opencount, minutes, lastupdate, created, role_id) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+    	private final String INSERT = "insert into mastertasks (id, name, reference, category, workcount, waitcount, donecount, opencount, minutes, lastupdate, created, role_id) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+    
     private final String UPDATE = "UPDATE MASTERTASKS set id=?, name=?, reference=?, category=?"
-            + " ,workcount=?, waitcount=?, donecount=?, opencount=?, minutes=?, lastupdate=?, created=?, role_id =? where id=?";
+            + " ,workcount=?, waitcount=?, donecount=?, opencount=?, minutes=?, lastupdate=?, created=?, role_id =? , archived=? where id=?";
     private final String DELETE = "DELETE FROM MASTERTASKS where id=?";
     private final String EXISTS = "SELECT count(*) FROM mastertasks where id=?";
     
@@ -36,10 +37,10 @@ public class masterDao extends GenericDao {
         super(db);
     }
 
-    public dbresult getallrecords() throws SQLException {
+    public dbresult getallrecords(int archived) throws SQLException {
 
         try {
-            return super.getallrecords(ALL);
+            return super.getrecord(ALL, archived);
         } catch (SQLException ex) {
             Logger.getLogger(masterDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -51,9 +52,9 @@ public class masterDao extends GenericDao {
        super.delete(DELETE, masterid);
    }
    
-   public dbresult getrecord(int masterid) throws SQLException
+   public dbresult getrecord(int masterid, int focusmode) throws SQLException
    {
-       return super.getrecord(REFRESH, masterid);
+       return super.getrecord(REFRESH, masterid, focusmode);
    }
     
     public int getnextid() throws SQLException {
@@ -77,7 +78,7 @@ public class masterDao extends GenericDao {
                     master.getMinutes(),
                     master.getLastupdate(),
                     master.getCreated(),
-                    master.getId()
+                    master.getRoleid()
             );
         } else {
             updateNew(UPDATE, master.getId(),
@@ -92,7 +93,9 @@ public class masterDao extends GenericDao {
                     master.getLastupdate(),
                     master.getCreated(),
                     master.getRoleid(),
-                    master.getId());
+                    master.getArchived(),
+                    master.getId()
+                    );
         }
     }
 }

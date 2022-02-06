@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="1314.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.MainWindowController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="1314.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Control.MainWindowController">
    <center>
       <SplitPane fx:id="spPaneVertical" dividerPositions="0.75" prefHeight="160.0" prefWidth="0.0" BorderPane.alignment="CENTER">
         <items>
@@ -19,8 +26,8 @@
                            <children>
                               <TableView fx:id="tbMasterTasks" maxWidth="1.7976931348623157E308" prefHeight="221.0" prefWidth="456.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <columns>
-                                    <TableColumn fx:id="master_sign" minWidth="0.0" prefWidth="5.0" text="Sign" />
-                                    <TableColumn fx:id="master_projectCol" prefWidth="400.0" text="Project" />
+                                    <TableColumn fx:id="master_archived" minWidth="0.0" prefWidth="5.0" text="Sign" />
+                                    <TableColumn fx:id="master_projectCol" prefWidth="473.0" text="Project" />
                                     <TableColumn fx:id="master_categoryCol" minWidth="0.0" prefWidth="200.0" text="Category" />
                                     <TableColumn fx:id="master_roleCol" minWidth="0.0" prefWidth="150.0" text="Role" />
                                     <TableColumn fx:id="master_lupCol" minWidth="0.0" prefWidth="50.0" styleClass="righta" text="L.Up" />
@@ -46,14 +53,14 @@
                                                 <TableView fx:id="tbTasks" layoutX="-20.0" layoutY="-58.0" prefHeight="128.0" prefWidth="248.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                    <columns>
                                                       <TableColumn fx:id="task_golden" minWidth="0.0" prefWidth="5.0" text="Sign" />
-                                                      <TableColumn fx:id="task_marked" minWidth="0.0" prefWidth="5.0" text="Sign" />
-                                                      <TableColumn fx:id="task_nameCol" prefWidth="400.0" text="Task" />
-                                                      <TableColumn fx:id="task_tagCol" minWidth="75.0" prefWidth="140.0" text="Tag" />
-                                                      <TableColumn fx:id="task_deadlineCol" minWidth="7.0" prefWidth="110.0" text="Deadline" />
-                                                      <TableColumn fx:id="task_tooverdueCol" prefWidth="50.0" styleClass="righta" text="CD" />
-                                                      <TableColumn fx:id="task_startCol" prefWidth="130.0" text="Start" />
-                                                      <TableColumn fx:id="task_waitingCol" prefWidth="130.0" text="Wait" />
-                                                      <TableColumn fx:id="task_finishCol" prefWidth="130.0" text="Finish" />
+                                                      <TableColumn fx:id="task_archived" minWidth="0.0" prefWidth="5.0" text="Sign" />
+                                                      <TableColumn fx:id="task_nameCol" prefWidth="480.0" text="Task" />
+                                                      <TableColumn fx:id="task_tagCol" prefWidth="250.0" text="Tag" />
+                                                      <TableColumn fx:id="task_deadlineCol" minWidth="7.0" prefWidth="85.0" text="Deadline" />
+                                                      <TableColumn fx:id="task_tooverdueCol" prefWidth="30.0" styleClass="righta" text="CD" />
+                                                      <TableColumn fx:id="task_startCol" prefWidth="108.0" text="Start" />
+                                                      <TableColumn fx:id="task_waitingCol" prefWidth="108.0" text="Wait" />
+                                                      <TableColumn fx:id="task_finishCol" prefWidth="108.0" text="Finish" />
                                                       <TableColumn fx:id="task_statusCol" prefWidth="60.0" text="Status" />
                                                    </columns>
                                                 </TableView>
@@ -89,18 +96,18 @@
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
                   <VBox layoutX="1.0" prefHeight="391.0" prefWidth="205.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <SplitPane fx:id="spPaneMiles" dividerPositions="0.5009009009009009" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane fx:id="spPaneMiles" dividerPositions="0.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="180.0">
                            <children>
-                              <TableView fx:id="tbBites" prefHeight="386.0" prefWidth="212.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView fx:id="tbBites" prefHeight="0.0" prefWidth="212.0" styleClass="tabletasks" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <columns>
                                     <TableColumn fx:id="bite_statusCol" minWidth="0.0" prefWidth="7.0" />
                                     <TableColumn fx:id="bite_GoldenCol" minWidth="0.0" prefWidth="7.0" />
                                     <TableColumn fx:id="bite_deadlineCol" minWidth="0.0" prefWidth="71.0" text="Date" />
                                     <TableColumn fx:id="bite_weekdayCol" minWidth="0.0" prefWidth="55.0" text="DoW" />
-                                    <TableColumn fx:id="bite_nameCol" prefWidth="463.0" text="Bite" />
-                                    <TableColumn fx:id="bite_CDCol" prefWidth="45.0" text="CD" />
+                                    <TableColumn fx:id="bite_nameCol" prefWidth="453.0" text="Bite" />
+                                    <TableColumn fx:id="bite_CDCol" prefWidth="37.0" text="CD" />
                                     <TableColumn fx:id="bite_nextCol" minWidth="7.0" prefWidth="7.0" />
                                  </columns>
                               </TableView>
@@ -113,9 +120,9 @@
                                     <TableColumn fx:id="deliverable_statusCol" minWidth="0.0" prefWidth="7.0" />
                                     <TableColumn fx:id="deliverable_GoldenCol" minWidth="0.0" prefWidth="7.0" />
                                     <TableColumn fx:id="deliverable_deadlineCol" minWidth="0.0" prefWidth="71.0" text="Date" />
-                                    <TableColumn fx:id="deliverable_weekdayCol" minWidth="0.0" prefWidth="55.0" text="DoW" />
-                                    <TableColumn fx:id="deliverable_nameCol" prefWidth="463.0" text="Deliverable" />
-                                    <TableColumn fx:id="deliverable_CDCol" prefWidth="45.0" text="CD" />
+                                    <TableColumn fx:id="deliverable_weekdayCol" minWidth="0.0" prefWidth="45.0" text="DoW" />
+                                    <TableColumn fx:id="deliverable_nameCol" minWidth="0.0" prefWidth="453.0" text="Deliverable" />
+                                    <TableColumn fx:id="deliverable_CDCol" prefWidth="37.0" text="CD" />
                                     <TableColumn fx:id="deliverable_nextCol" minWidth="7.0" prefWidth="7.0" />
                                  </columns>
                               </TableView>
@@ -142,7 +149,7 @@
                            <children>
                               <Text fx:id="textTotalTaskCountAndMarked" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="11.0" />
                                  </font>
                               </Text>
                            </children>
@@ -151,7 +158,7 @@
                            <children>
                               <Text fx:id="textStatusOpen" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="11.0" />
                                  </font></Text>
                            </children></Pane>
                         <Pane fx:id="spPaneWorking" prefHeight="200.0" prefWidth="60.0">
@@ -161,7 +168,7 @@
                            <children>
                               <Text fx:id="textStatusWorking" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="11.0" />
                                  </font></Text>
                            </children></Pane>
                         <Pane fx:id="spPaneWaiting" prefHeight="200.0" prefWidth="60.0">
@@ -171,7 +178,7 @@
                            <children>
                               <Text fx:id="textStatusWaiting" layoutX="5.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="55.0">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="11.0" />
                                  </font></Text>
                            </children></Pane>
                      </children>

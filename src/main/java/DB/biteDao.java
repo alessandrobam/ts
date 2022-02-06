@@ -46,7 +46,13 @@ public class biteDao extends GenericDao {
 			"       10                              countdown2,\r\n" + 
 			"       if ( a.status = 3, \"\", Datediff(a.deadline, Sysdate())) countdown,\r\n" + 
 			"       m.NAME                          mastername,\r\n" + 
-			"       t.NAME                          taskname\r\n" + 
+			"       t.NAME                          taskname,\r\n" + 
+			"       case	\r\n" + 
+			"           when SUBSTR(a.name,1,2) = \"w\" then 1\r\n" + 
+			"           when SUBSTR(a.name,1,2) = \"d\" then 2\r\n" + 
+			"           when SUBSTR(a.name,1,2) = \"de\" then 3\r\n" + 
+			"       ELSE 4 \r\n" + 
+			"       END  priority_order\r\n" + 
 			"FROM   actions a,\r\n" + 
 			"       tasks t,\r\n" + 
 			"       mastertasks m\r\n" + 
@@ -55,7 +61,9 @@ public class biteDao extends GenericDao {
 			 "       AND t.masterid = a.masterid\r\n" + 
              "       AND m.id = a.masterid\r\n" +
 			"{filter} \r\n" +
+		    "       AND ( t.archived <= ? AND m.archived <= ? ) \r\n" +
 			"ORDER  BY  a.status, \r\n" + 
+			"           priority_order,\r\n" +
 			"			a.next DESC, \r\n" + 
 			"			a.golden DESC,\r\n" + 
 			"			countdown  ";
@@ -69,13 +77,19 @@ public class biteDao extends GenericDao {
 	public final static String status_range  = "       AND a.status BETWEEN ? AND ?\r\n" ; 
 	public final static String master_id     = "       AND a.masterid = ?\r\n" ;
 	public final static String task_id       = "       AND a.masterid = ? AND a.taskid = ? \r\n" ;
-	public final static String type_planning = "       AND a.name REGEXP '^(r|w|d|deliverable)\\\\s\\-'"; 
+	public final static String type_planning = "       AND a.name REGEXP '^(w|d|deliverable)\\\\s\\-'"; 
 	public final static String type_action   = "       AND not (a.name REGEXP '^(w|d|deliverable)\\\\s\\-')";
 	
 	private final String allRecordsBetweenDates = " SELECT a.*,\r\n" + 
 													"       if ( a.status = 3, \"\", Datediff(a.deadline, Sysdate())) countdown,\r\n" + 
 													"       m.NAME                          mastername,\r\n" + 
 													"       t.NAME                          taskname\r\n" + 
+													"       case	\r\n" + 
+													"           when SUBSTR(a.name,1,2) = \"w\" then 1\r\n" + 
+													"           when SUBSTR(a.name,1,2) = \"d\" then 2\r\n" + 
+													"           when SUBSTR(a.name,1,2) = \"de\" then 3\r\n" + 
+													"       ELSE 4 \r\n" + 
+													"       END  priority_order\r\n" + 
 													"FROM   actions a,\r\n" + 
 													"       tasks t,\r\n" + 
 													"       mastertasks m\r\n" + 
@@ -86,12 +100,13 @@ public class biteDao extends GenericDao {
 													"              OR a.NAME LIKE ? )\r\n" + 
 													"       AND a.deadline BETWEEN ? AND ?\r\n" + 
 													"       AND a.status BETWEEN ? AND ?\r\n" + 
-													"ORDER  BY a.status,\r\n" + 
+													"ORDER  BY \r\n"  + 
+													"          a.status,\r\n" + 
+													"          priority_order,\r\n" +
 													"          a.next DESC,\r\n" + 
 													"          a.golden DESC,\r\n" + 
 													"          a.deadline DESC,\r\n" + 
 													"          countdown  ";
-
 	private final String DELETE = " DELETE FROM actions\r\n" + 
 			                      "WHERE  id = ?  ";
 	
@@ -170,7 +185,7 @@ public class biteDao extends GenericDao {
 	public dbresult getBites(Sources source, String filter, Object... parametros) throws SQLException {
 		filter = (source == Sources.ACTION) ? filter + type_action : filter + type_planning;
 		String sql = this.parseSQL(getBitesRecords, filter);
-		return super.getrecord(sql , parametros);
+		return super.getrecord(sql, parametros);
 	}
 
 	

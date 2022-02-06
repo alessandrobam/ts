@@ -16,8 +16,8 @@ import javafx.beans.property.StringProperty;
  * @author Alessandro
  */
 public class todoitem {
-  private final StringProperty name = new SimpleStringProperty();
-  private final IntegerProperty id = new SimpleIntegerProperty();
+   private final StringProperty name = new SimpleStringProperty();
+   private final IntegerProperty id = new SimpleIntegerProperty();
     private final StringProperty masterName = new SimpleStringProperty();
 
     public String getMasterName() {

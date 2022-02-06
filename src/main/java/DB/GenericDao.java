@@ -91,7 +91,7 @@ public abstract class GenericDao {
     	
         //Statement stmt = conn.createStatement();
     	ResultSet rs = pstmt.executeQuery(Stmt);
-	dbresult dbs = new dbresult(rs);
+     	dbresult dbs = new dbresult(rs);
         
         dbs.stm = pstmt;
                 

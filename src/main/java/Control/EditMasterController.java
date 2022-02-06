@@ -27,6 +27,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -52,11 +53,12 @@ public class EditMasterController implements Initializable {
     @FXML TextField edName;
     @FXML ComboBox edCategory;
     @FXML ComboBox edRole;
-    @FXML
-    private TextField edName1;
+    @FXML CheckBox chArchived;
+    @FXML private TextField edName1;
     
     
-    @FXML
+    
+	@FXML
     public void okButtonClick(ActionEvent event) throws SQLException, ParseException, IOException  {
       String oldfilename = "";    
       switch (this.operation){
@@ -68,12 +70,17 @@ public class EditMasterController implements Initializable {
               break;
           case Util.opUPDATE:
                 m.setLastupdate(Util.getCurrentDateMinute());
-                //return TextFileHandler.GetNotesFile(getCurrentMaster().getName(), fName, TID, true);
                 oldfilename = TextFileHandler.GetNotesFile(m.getName(), m.getName(), "Master", false);
               break;
       }
  
      m.setName(edName.getText());
+     
+     
+     
+     int myInt = (chArchived.isSelected() ? 1 : 0);
+     
+     m.setArchived (myInt);
      m.setCategory((String) edCategory.getSelectionModel().getSelectedItem());
      
      m.setRoleName((String) edRole.getSelectionModel().getSelectedItem());
@@ -86,7 +93,13 @@ public class EditMasterController implements Initializable {
      TextFileHandler.renameFile (oldfilename, newfilename  );
      
      TextFileHandler.renameFile (oldfilename, newfilename  );
-     Util.logStatusChange("CREATED", "Master Task Creation", newfilename );
+     
+     
+     if (this.operation == Util.opINSERT) {
+    	 Util.logStatusChange("CREATED", "Master Task Creation", newfilename );
+     }
+     
+     
      
      
      
@@ -157,6 +170,11 @@ public class EditMasterController implements Initializable {
             edName.setText(m.getName());
             edRole.getSelectionModel().select(m.getRoleName());
             edCategory.getSelectionModel().select(m.getCategory());
+            
+            
+            
+            
+            chArchived.setSelected( m.getArchived() == 1);
             
             
         }

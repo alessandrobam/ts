@@ -17,13 +17,17 @@ public class globalitem {
         private int biteid;
         private String name;
         private String type;
+        private String tag;
+        private String master;
 
-    public globalitem(int masterid, int taskid, int biteid, String name, String type) {
+    public globalitem(int masterid, int taskid, int biteid, String name, String type, String tag, String master) {
         this.masterid = masterid;
         this.taskid = taskid;
         this.biteid = biteid;
         this.name = name;
         this.type = type;
+        this.tag = tag;
+        this.master = master;
     }
 
     public int getMasterid() {
@@ -65,6 +69,22 @@ public class globalitem {
     public void setType(String type) {
         this.type = type;
     }
-      
+   
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String type) {
+        this.tag = tag;
+    }      
     
+    
+    public String getMaster() {
+        return master;
+    }
+
+    public void setMaster(String master) {
+        this.name = master;
+    }
+
 }

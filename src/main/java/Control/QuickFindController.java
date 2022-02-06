@@ -88,10 +88,20 @@ public class QuickFindController implements Initializable {
 
     private String findAndSelectTaskByID(TableView tb, String name) {
 
+    	String dataText; 	
         for (int x = searchStart; x <= tb.getItems().size() - 1; x++) {
 
             todoitem t = (todoitem) tb.getItems().get(x);
-            if (Util.removeAccents(t.getName()).toUpperCase().contains(Util.removeAccents(name).toUpperCase())) {
+            
+            
+            dataText = t.getName();
+            if (t instanceof task) {
+            	dataText = t.getName().concat(((task)t).getTag());
+              }
+            
+            
+            
+            if (Util.removeAccents(dataText).toUpperCase().contains(Util.removeAccents(name).toUpperCase())) {
                 tb.getSelectionModel().clearAndSelect(x);
                 tb.scrollTo(x);
                 lastSeachSuccessful = true;

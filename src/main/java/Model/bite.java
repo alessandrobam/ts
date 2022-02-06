@@ -26,10 +26,12 @@ public class bite extends todoitem {
 	private String taskname;
 	private String mastername;
 
+	
 	public String getMastername() {
 		return mastername;
 	}
 	public void setMastername(String mastername) { this.mastername = mastername;}
+	
 	public String getTaskname() { return taskname; }
 	public void setTaskname(String taskname) { this.taskname = taskname; }
 	public String getWeekday() { return "Seguda"; }
@@ -150,7 +152,20 @@ public class bite extends todoitem {
     		if  (reschedules > 0) {
 	    		totalDays = totalDays +  daysAdded;
 	    		
-	    		String rescheduleStamp = "[" + reschedules  + ", "+ totalDays  +"d]";  
+	    		String rescheduleStamp ="";
+	    		
+	    		if ( ( 
+	    			 this.getName().toUpperCase().indexOf("WEEKLY") + 
+	    			 this.getName().toUpperCase().indexOf("DAILY") + 
+	    			 this.getName().toUpperCase().indexOf("BI-WEEKLY") + 
+	    			 this.getName().toUpperCase().indexOf("MONTHLY") +
+	    			 this.getName().toUpperCase().indexOf("QUARTERLY")+
+	    			 this.getName().toUpperCase().indexOf("RECURRENT") == -6 )
+	    			) {
+	    		
+	    			rescheduleStamp = "[" + reschedules  + ", "+ totalDays  +"d]";
+	    		}
+	    		
 	        	this.setName(this.getName().substring(0, lo).trim() + " " + rescheduleStamp )  ;
 	        	this.setLastreschedule(Date.valueOf(LocalDate.now()));
     		}

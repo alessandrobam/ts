@@ -23,6 +23,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -55,6 +56,7 @@ public class EditTaskController implements Initializable {
     @FXML TextField edName;
     @FXML TextField edTag;
     @FXML ComboBox edRole;
+    @FXML CheckBox chArchived;
     
     
         private int operation;
@@ -93,17 +95,21 @@ public class EditTaskController implements Initializable {
                  t.setStatus(task.stOPEN);
                  t.setStatusprev(task.stUNSET);
                  t.setDeadline(Date.valueOf(LocalDate.now()));
-                 //tbTasks.getSelectionModel().select(t);
-                 //tbTasks.getSelectionModel().focus(0);
-                 //tbTasks.scrollTo(t);           
+                 
               break;
           case Util.opUPDATE:
               oldfilename = TextFileHandler.GetNotesFile(m.getName(), t.getName(), String.valueOf(t.getId()), false);
           break;
       }
+        
+     String oldName  = t.getName();
      t.setName(edName.getText());
      t.setTag(edTag.getText());
      t.setChangedon(Util.getCurrentDateMinute());
+     
+     int myInt = (chArchived.isSelected() ? 1 : 0);
+     
+     t.setArchived(myInt);
      
      
      t.setRoleName((String) edRole.getSelectionModel().getSelectedItem());
@@ -120,19 +126,37 @@ public class EditTaskController implements Initializable {
         
      
      
-     tDao.persist(t);
      
      String newfilename = TextFileHandler.GetNotesFile(m.getName(), t.getName(), String.valueOf(t.getId()),false);
      
      System.out.println(newfilename);
      
-     TextFileHandler.renameFile (oldfilename, newfilename  );
-     Util.logStatusChange("CREATED", "Task Creation", newfilename );
+     if (!TextFileHandler.renameFile (oldfilename, newfilename  )) {
+    	 Util.AlertMessagebox("Old file could not be renamed. Task name could not be changed." );
+    	 t.setName(oldName);
+    	 edName.setText(oldName);
+     }
+     
+     
+     
+   
+     
+     tDao.persist(t);
+     
+     
+     if (this.operation == Util.opINSERT) {
+    	 Util.logStatusChange("","#NEWENTRIESONTOP#", newfilename, false );
+    	 Util.logStatusChange("CREATED", "Task Creation", newfilename );
+    	 
+     }
      
      
      parent.refreshMaster();
      parent.selectTaskById(t.getId());
      Stage stage = (Stage) btOK.getScene().getWindow();
+     
+     
+     
      stage.hide();
      parent.focusAndSelect(tbTasks);
      
@@ -173,6 +197,8 @@ public class EditTaskController implements Initializable {
             edName.setText(t.getName());
             edTag.setText(t.getTag());
             edRole.getSelectionModel().select(t.getRoleName());
+            
+            chArchived.setSelected( t.getArchived() == 1);
         }
         
         

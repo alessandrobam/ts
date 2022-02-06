@@ -22,12 +22,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.FileUtils;
+
+import Control.MainWindowController.fileSystemAccessMode;
+
 import java.net.URL;
 
 
@@ -43,16 +47,29 @@ public class TextFileHandler {
   //For smaller files
   
   
-  public void InsertLine (String line, String filename) {
-	  //System.out.println("escrevendo status" + Util.getCurrentDateMinute());
-	  File file = new File(filename);
-	  String lines = null;
-	  try {
-		FileUtils.write(file, line, true);
-	} catch (IOException e) {
-	}
+  public void InsertLine (String line, String filename) throws IOException {
+	  
+	  List<String> lines_from_file =  new ArrayList<String>();
+	  if (Files.exists(Paths.get(filename))) {
+		  lines_from_file = Files.readAllLines(Paths.get(filename));
+	  }
+	  
+	  int lineNo = 0;
+	  for (String s : lines_from_file) {
+		   lineNo += 1;  
+		   if (s.toUpperCase().indexOf("#NEWENTRIESONTOP#") > -1) {
+			   break;
+		   } 		    	
+	    }
+	   
+	  
+	  lines_from_file.add(lineNo, line); // for example
+
+	  Files.write(Paths.get(filename), lines_from_file, StandardCharsets.UTF_8); 
+      
   }
 
+    
     public void InsertLineAtTop (String line, String filename) {
 	  //System.out.println("escrevendo status" + Util.getCurrentDateMinute());
 	  File file = new File(filename);
@@ -70,8 +87,8 @@ public class TextFileHandler {
 	  return folderExisting.exists();
   }
   
-  public static void renameFile(String oldfile, String newfile) throws IOException{
-      if (!oldfile.isEmpty() && !newfile.isEmpty() ){
+  public static boolean renameFile(String oldfile, String newfile) throws IOException{
+      if (!oldfile.isEmpty() & !newfile.isEmpty() ){
         System.out.print("Getting ready to rename. Both file name are not empty");
         File oldf = new File(oldfile);
         File newf = new File(newfile);
@@ -90,16 +107,12 @@ public class TextFileHandler {
            oldf = new File(newf_dir.getPath() + "\\" + oldf.getName() );
            newf = new File(newf_dir.getPath() + "\\" + newf.getName());
         }
-        if (oldf.renameTo(newf))     {
-            System.out.println("Rename worked");
-        }else
-        {
-            System.out.println("Rename failed");
-            //Util.AlertMessagebox("Note renaming failed, please do it manually");
-            //Util.OpenDir(oldf_dir.getPath());
-        }
+        
+        
+        return oldf.renameTo(newf);
         
       }
+      return true;
       
   }
   
@@ -133,7 +146,13 @@ public class TextFileHandler {
 	  	{ if (Util.isValidURL(command)) {
 	  	    return "URL";
 	  	  } else {
-	  		return "Dir";
+	  		if (TextFileHandler.isFile(command)) {
+	  		   return "File";	
+	  		} else
+	  		{
+	  		   return "Dir";
+	  		}
+	  		
 	  	  }	
 	  	}
 	  }
@@ -167,7 +186,67 @@ public class TextFileHandler {
   }
   
   
+
   
+  public String locationFromFile(String fileName, fileSystemAccessMode accessMode) throws IOException {
+	  
+	  String file = "";
+	  String hostDir= "";
+	  String referenceDir = "";
+	  String URL = "";
+	  String pythonScript = "";
+	  
+	  for (int x = 4; x > 0; x--) { //For loop to eval 2 first lines of the file 
+		    String bracketCommand = getBracketCommandFromFile(fileName, x);
+		  
+		   switch (stringType(bracketCommand )) {
+		   		case "Dir":
+		   			referenceDir = bracketCommand;
+		   			break;
+		   		case "File":
+		   			file = bracketCommand;
+		   			break;
+		   		case "URL":
+		   			URL = bracketCommand;
+		   			break;
+		   		case "Python":
+		   			pythonScript =  bracketCommand;
+		   			break;
+		    }
+	  }
+	
+	  if (!file.isEmpty()) {
+		  hostDir = new File(file).getParent();
+	  } else
+	  {
+		  file = referenceDir;
+		  hostDir = referenceDir;
+	  }
+	  
+	  if (referenceDir.isEmpty()) {
+		  referenceDir = hostDir;
+	  }
+
+	  String response = "";
+	  
+	  switch (accessMode) {
+	  	case FILE:
+	  		response  = file;
+	  		break;
+	  	case FILE_HOSTDIR:
+	  		response = hostDir;
+	  		break;
+	  	case URL:
+	  		response = URL;
+	  		break;
+	  	case REFERENCEDIR:
+	  	case RECENT_FILE:
+	  		response = referenceDir;
+	  		break;
+	  }
+	  return response;  
+  }
+
   
 public String getPathFromNotes(String fileName) throws IOException {
 	  for (int x = 1; x < 4; x++) { //For loop to eval 2 first lines of the file 
@@ -293,12 +372,16 @@ public static boolean DirExists(String directoryName)
 
 public static boolean isFile(String Name)
 {
+	
+	
   if (Util.onWindows()) {
-    return !Name.contains("\\");
+    return Files.isRegularFile(new File(Name).toPath());
   } else
   {
       return !Name.contains("/");
   }
+  
+  
 }
 
   

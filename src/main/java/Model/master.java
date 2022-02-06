@@ -24,6 +24,9 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.BooleanProperty;
+
 import org.apache.commons.lang3.StringUtils;
 public class master extends todoitem {
     
@@ -32,8 +35,7 @@ public class master extends todoitem {
     private final StringProperty rolename  = new SimpleStringProperty();
     private final IntegerProperty roleid = new SimpleIntegerProperty();    
     private final IntegerProperty countdown = new SimpleIntegerProperty();    
-    
-    
+        
     private final IntegerProperty inactivity = new SimpleIntegerProperty();    
     private final FloatProperty perccomplete = new SimpleFloatProperty();
     private final IntegerProperty workcount = new SimpleIntegerProperty();
@@ -43,6 +45,8 @@ public class master extends todoitem {
     private final IntegerProperty taskfortoday = new SimpleIntegerProperty();
     private final IntegerProperty taskoverdue = new SimpleIntegerProperty();
     private final LongProperty minutes = new SimpleLongProperty();
+    private final IntegerProperty archived  = new SimpleIntegerProperty();
+    
     private final ObjectProperty<Timestamp> lastupdate = new SimpleObjectProperty<Timestamp>();
     private final ObjectProperty<Timestamp> created = new SimpleObjectProperty<Timestamp>();
     
@@ -264,11 +268,29 @@ public class master extends todoitem {
     }
     
     
+
+
+    
+    public int getArchived() {
+        return archived.get();
+    }
+
+    public void setArchived(int value) {
+        archived.set(value);
+    }
+
+    public IntegerProperty archivedProperty() {
+        return archived;
+    }
+    
+    
     public master(int id, String name, Timestamp created) {
         this.setId(id);
         this.setName(name);
         this.created.setValue(created);
     }
+    
+    
     
     
     public master(int Id, 
@@ -286,7 +308,8 @@ public class master extends todoitem {
                   Timestamp lastupdate,
                   Timestamp created,
                   String rolename,
-                  int roleid)
+                  int roleid, 
+                  int archived)
             {
                     this.setId(Id);
                     this.setName (name);
@@ -303,5 +326,6 @@ public class master extends todoitem {
                     this.setCreated(created);
                     this.setRoleName(rolename);
                     this.setRoleid(roleid);
+                    this.setArchived(archived);
             }
 }

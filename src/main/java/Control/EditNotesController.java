@@ -13,6 +13,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import Model.task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,6 +43,8 @@ public class EditNotesController implements Initializable {
     @FXML Button btOK;
     @FXML TextArea edNota;
     
+	public enum landingPosition { TOPICS, TIMELINE};
+    
     private String pFilename;
 
     public String getpFilename() {
@@ -58,38 +62,78 @@ public class EditNotesController implements Initializable {
     }
     
     
-    
-    public void setStageAndSetupListeners(Stage stage)  {
-         final KeyCombination scSave = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.SHORTCUT_DOWN);
-         final KeyCombination scEditor = new KeyCodeCombination(KeyCode.E, KeyCombination.SHORTCUT_DOWN);
-         
-         
+	String meetingFrame = "\r\n" + "\r\n" + "Participants:\r\n" + "	- \r\n" + "\r\n" + "Key Topics Discussed\r\n"
+			+ "	- \r\n" + "\r\n" + "Actions\r\n" + "	- \r\n" + "	- \r\n" + "\r\n" + "Key Takeaways\r\n" + "	- \r\n"
+			+ "\r\n" + "";
+	
+	
+    public void setStageAndSetupListeners(Stage stage, String taskName, int taskStatus, String biteName  )  {
+    	
+    	
          edPath.setText(pFilename);
         
          stage.getScene().addEventHandler(KeyEvent.KEY_RELEASED, (KeyEvent e) -> {
-             if (scSave.match(e)) {
-                 try {
-                     btSaveClick(null);
-                     stage.close();
-                 } catch (IOException ex) {
-                     Logger.getLogger(EditNotesController.class.getName()).log(Level.SEVERE, null, ex);
-                 }
-             }
-             else
-              if (e.getCode()==KeyCode.ESCAPE) {
-                  stage.close();
-              }
-              else
-               {
-                  if (scEditor.match(e)) {
-                      stage.close();
-                      try {
-                          btEditor(null);
-                      } catch (IOException ex) {
-                          Logger.getLogger(EditNotesController.class.getName()).log(Level.SEVERE, null, ex);
-                      }
-                  };  
-               };
+        	 
+        	 if (e.isShortcutDown() | e.getCode()==KeyCode.ESCAPE ) { //control is pressed
+        		 
+            	 switch (e.getCode()) {
+            		case ENTER:
+            			try {
+                            btSaveClick(null);
+                            stage.close();
+                         } catch (IOException ex) {
+                            Logger.getLogger(EditNotesController.class.getName()).log(Level.SEVERE, null, ex);
+                         }
+            			break;
+
+            		case ESCAPE:
+            			stage.close();
+            			break;
+            			
+            		case E: 
+              			  stage.close();
+	                      try {
+	                          btEditor(null);
+	                      } catch (IOException ex) {
+	                          Logger.getLogger(EditNotesController.class.getName()).log(Level.SEVERE, null, ex);
+	                      }
+            			
+            			
+            			break;
+            		case F:
+            			edNota.insertText(edNota.getCaretPosition(),  meetingFrame);
+     					break;
+     			
+            		case Q:
+            			edNota.insertText(edNota.getCaretPosition(),   "#NEWENTRIESONTOP#" );
+            			
+     					break;
+     					
+            		case M:
+            			edNota.insertText(edNota.getCaretPosition(),   "NEXT MEETING TOPICS");
+            			
+     					break;
+
+            		case B:
+            			edNota.insertText(edNota.getCaretPosition(),   biteName);
+            			
+            			break;
+     					
+            		case P:
+            			
+            			edNota.insertText(edNota.getCaretPosition(),   taskName);
+            			break;
+            			
+            		case T:
+            			edNota.insertText(edNota.getCaretPosition(),   Util.DateToText(new java.util.Date(), "dd MMM yyyy - EEE - HH:mm")+ " - " );
+     					break;
+     					
+            		case L:
+            			edNota.insertText(edNota.getCaretPosition(),   "----------------------------------tasks below are on ascending order by date of creation -----------------------");
+     					break;
+            	 }
+        	 }
+         	    
          });
          
         TextFileHandler handler = new TextFileHandler();
@@ -101,15 +145,89 @@ public class EditNotesController implements Initializable {
         
         java.util.Date a = new java.util.Date();
         
+        /*
+        May 10th, 2020 - if the text #NEWENTRIESONTOP# is found, new log entries will added immediately after it. If not found, entries will be 
+        inserted to the bottom of the file.  
+ 	
+       */
         
-//        edNota.appendText( Util.DateToText(a, "HH:mm dd/MM/yyyy - u")+ " - ");
-        edNota.appendText( Util.DateToText(a, "dd MMM yyyy - EEE - HH:mm")+ " - ");
+        String goTopics = "NEXT MEETING TOPICS";
+        String goTimeline = "#NEWENTRIESONTOP#";
         
+        int goTopics_pos = findStringPos(edNota.getText(), goTopics);
+  	    int goTimeline_pos = findStringPos(edNota.getText(), goTimeline);
+  	    
+  	    
+  	    boolean isMeeting = taskName.toUpperCase().indexOf("MEETING") > -1 ;
+  	    boolean isRunning = taskStatus == task.stWORKING;
+  	    
+  	  int position = goTimeline_pos;
+  	    
+  	    if (isMeeting) {
+  	    	if (!isRunning & goTopics_pos > 0 ) {
+  	    		position = goTopics_pos;
+  	    	}
+  	    }
+  	    
+  	    
+  	  edNota.positionCaret( position);
+  	  if (position > 0) {
+  		  edNota.insertText(position, "");
+  	  }
+  	  
         
+//        
+//        int position = 0;
+//        switch (PositionStyle) {
+//          case NEXTMEETING:
+//        	  position = findStringPos(edNota.getText(),"NEXT MEETING TOPICS");
+//        	  
+//
+//        	  break;
+//
+//          case TIMELINE:
+//        	  position = findStringPos(edNota.getText(),"#NEWENTRIESONTOP#");
+//
+//        	  break;
+//          
+//          case FIRST:
+//        	  
+//        	  int positionMeeting = findStringPos(edNota.getText(),"NEXT MEETING TOPICS");
+//        	  int positionTimeline = findStringPos(edNota.getText(),"#NEWENTRIESONTOP#");
+//        	  
+//        	  position  = Math.min(positionMeeting, positionTimeline);
+//        	  if (position==0  ) {
+//        		  position = Math.max(positionMeeting, positionTimeline);
+//        	  } 
+//        	  
+//        	  break;  
+//        	  
+//        }
+
+//        edNota.positionCaret( position);
+//        if (position > 0) {
+//        	edNota.insertText(position, "\n");
+//        } else
+//        {
+//        	
+//        }
         
-        
-        edNota.positionCaret( edNota.getLength());
     }
+    
+    
+    private int findStringPos(String text, String searchingString) {
+
+    	
+    	int position = text.toUpperCase().indexOf(searchingString) ;
+    	if (position >-1) {
+    		position = position + searchingString.length();
+    	} else
+    	{
+    		position = 0;
+    	}
+    	return position;
+    }
+    
     
     private void saveToFile() throws IOException
     {
@@ -149,8 +267,11 @@ public class EditNotesController implements Initializable {
 
     private void openEditor(String fileName) throws IOException
     {
-        String cmd = "explorer " + "\"" + fileName + "\"" ;
-        Runtime.getRuntime().exec(cmd);
+//        String cmd = "explorer " + "\"" + fileName + "\"" ;
+//        Runtime.getRuntime().exec(cmd);
+        
+        Util.openFile(fileName);
+   
 	
     }
     

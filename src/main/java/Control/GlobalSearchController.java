@@ -59,9 +59,16 @@ public class GlobalSearchController implements Initializable {
      @FXML
     private TableColumn<globalitem, String> name;
     @FXML
-    private TableColumn<globalitem, String> type;
+    private TableColumn<globalitem, String> tag;
     
-     private Stage stage;
+    @FXML
+    private TableColumn<globalitem, String> type;
+
+    @FXML
+    private TableColumn<globalitem, String> master;
+    
+    
+    private Stage stage;
     private MainWindowController parentcontroller;
     private globalSearchDao gsDao;
     
@@ -130,7 +137,10 @@ public class GlobalSearchController implements Initializable {
                 rs.getInt("TASKID"),
                 rs.getInt("ACTIONID"),
                 rs.getString("NAME"),
-                rs.getString("TYPE")
+                rs.getString("TYPE"),
+                rs.getString("TAG"),
+                rs.getString("MASTER")
+                
         );
     }
     
@@ -165,12 +175,14 @@ public class GlobalSearchController implements Initializable {
     public void SetValueFactory() {
         int i;
 
-        String[] variableNames = {"name", "type"};
+        String[] variableNames = {"name", "tag", "type","master"};
 
         i = 0;
 
         name.setCellValueFactory(new PropertyValueFactory<>(variableNames[i++]));
+        tag.setCellValueFactory(new PropertyValueFactory<>(variableNames[i++]));
         type.setCellValueFactory(new PropertyValueFactory<>(variableNames[i++]));
+        master.setCellValueFactory(new PropertyValueFactory<>(variableNames[i++]));
         
         
         
