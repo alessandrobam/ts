@@ -79,7 +79,7 @@ public class TimeSheetFX extends Application {
 		stage.setMaximized(true);
 		scene.getStylesheets().add("test.css");
 		stage.setScene(scene);
-		stage.setTitle(Util.Util.Read("Config.ini", "TITLE"));
+		
 		
 		
 

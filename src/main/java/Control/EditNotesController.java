@@ -158,7 +158,8 @@ public class EditNotesController implements Initializable {
   	    int goTimeline_pos = findStringPos(edNota.getText(), goTimeline);
   	    
   	    
-  	    boolean isMeeting = taskName.toUpperCase().indexOf("MEETING") > -1 ;
+  	  //boolean isMeeting = taskName.toUpperCase().indexOf("MEETING") > -1 ;
+  	  boolean isMeeting = true;
   	    boolean isRunning = taskStatus == task.stWORKING;
   	    
   	  int position = goTimeline_pos;

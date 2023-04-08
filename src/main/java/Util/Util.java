@@ -138,7 +138,7 @@ public class Util {
 			} else {
 				//desktop.open(new File(pPath));
 				Runtime.getRuntime().exec("explorer.exe " + "\"" + pPath + "\"");
-				
+				Util.clipIt(pPath);
 			}
 
 		} else {
